@@ -16,7 +16,6 @@ const Login = () => {
     const password = e.target.password.value;
     console.log(email, password);
 
-    
     setEmailError("");
     setPasswordError("");
 
