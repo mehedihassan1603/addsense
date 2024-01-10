@@ -8,6 +8,8 @@ import Layout from "./Components/Layout/Layout.jsx";
 import Login from "./Components/Authentication/Login/Login.jsx";
 import Register from "./Components/Authentication/Register/Register.jsx";
 import AuthProvider from "./Components/Authentication/AuthProvider/AuthProvider.jsx";
+import PrivateRoute from "./Components/Authentication/PrivateRoute/PrivateRoute.jsx";
+import Ads from "./Components/Ads/Ads.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register></Register>,
+      },
+      {
+        path: "/ads",
+        element: <PrivateRoute><Ads></Ads></PrivateRoute>,
       },
     ],
   },
