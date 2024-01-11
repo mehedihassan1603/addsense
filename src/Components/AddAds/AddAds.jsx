@@ -11,6 +11,7 @@ const AddAds = () => {
   const [product, setProduct] = useState({
     frame: "",
     name: "",
+    playtime: "",
   });
 
   const handleSubmit = (e) => {
@@ -27,11 +28,10 @@ const AddAds = () => {
             });
     
             setTimeout(() => {
-              e.target.reset();
-              
+              e.target.reset();  
+              navigate("/");
             }, 2000);
           }
-          navigate("/");
         })
   };
 
@@ -43,7 +43,7 @@ const AddAds = () => {
   return (
     <div className="bg-gray-200 w-9/12 mt-10 mx-auto p-6 rounded-lg">
       <h1 className="text-2xl font-bold bg-slate-800 py-2 rounded-lg text-center text-white mb-4">
-        Add Product
+        Add ADS
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -72,12 +72,25 @@ const AddAds = () => {
             className="w-full border p-2 rounded-md"
           />
         </div>
+        <div className="mb-4">
+          <label htmlFor="playtime" className="block text-gray-600">
+            Ads Run Time:
+          </label>
+          <input
+            type="number"
+            id="playtime"
+            name="playtime"
+            required
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
         <div className="flex justify-center items-center">
           <button
             type="submit"
-            className="px-5 py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-orange-500 via-rose-300 to-orange-500"
+            className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
           >
-            ADD ADS
+            ADD
           </button>
         </div>
       </form>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
 import useAuth from "../Authentication/Hook/useAuth";
@@ -10,7 +10,7 @@ const Details = () => {
   const { _id } = useParams();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState("");
   const [showButton, setShowButton] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const { user } = useAuth();
@@ -33,9 +33,15 @@ const Details = () => {
     const fetchData = async () => {
       try {
         const response = await axiosPublic.get("/ads");
+        console.log(response)
+        // const findTime = response.data.find(time =>{
+        //   console.log(time.playtime)
+        // });
         const foundProduct = response.data.find((item) => item._id === _id);
+        // console.log(foundProduct.playtime)
         if (foundProduct) {
           setProduct(foundProduct);
+          setCountdown(foundProduct.playtime)
         } else {
           console.error("Product not found");
         }
@@ -63,27 +69,27 @@ const Details = () => {
   const handleRewardButtonClick = async () => {
     if (user?.email) {
       try {
-        // Update the state immediately to provide a responsive UI
         setClickCount((prevCount) => prevCount + 1);
-
-        // Make the API call to update the count on the server
         const response = await axiosPublic.post("/userinfo", {
           count: clickCount + 1,
           userEmail: user.email,
         });
-
-        // Check the response status or data for success
         if (response.status === 200) {
-          console.log("Data posted successfully!");
-          navigate("/ads")
+          toast.success("Reward gain successful!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+          });
+  
+          setTimeout(() => {
+            navigate('/ads');
+            window.location.reload();
+          }, 2000);
         } else {
           console.error("Error posting data to /userinfo:", response.data);
-          // If there's an error, you may want to revert the UI count update
           setClickCount((prevCount) => prevCount - 1);
         }
       } catch (error) {
         console.error("Error posting data to /userinfo:", error);
-        // If there's an error, you may want to revert the UI count update
         setClickCount((prevCount) => prevCount - 1);
       }
     } else {
@@ -98,9 +104,10 @@ const Details = () => {
   return (
     <div className="py-6">
       <div className="w-80 h-[400px] bg-slate-200 rounded-lg shadow-xl">
-        <img src={product.frame} alt={product.name} />
+        <img className="h-40" src={product.frame} alt={product.name} />
         <div className="mx-10">
           <h1>Name: {product.name}</h1>
+          <h2>Time: {product.playtime}</h2>
           {showButton ? (
             <button
               onClick={handleRewardButtonClick}

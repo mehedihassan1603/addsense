@@ -58,7 +58,7 @@ const Ads = () => {
                 key={product._id}
                 className="w-80 h-[400px] bg-slate-200 rounded-lg shadow-xl"
               >
-                <img src={product.frame} alt="" />
+                <img className="h-60" src={product.frame} alt="" />
                 <div className="mx-10">
                   <h1>Name: {product.name}</h1>
                   <div className="flex justify-between items-center gap-10">
