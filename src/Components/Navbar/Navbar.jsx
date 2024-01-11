@@ -1,12 +1,40 @@
-import { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
+import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
+  const [clickCount, setClickCount] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (user && user.email) {
+          const updatedCount = await axiosPublic.get("/userinfo");
+          const foundEmail = updatedCount.data.find(
+            (item) => item.userEmail === user.email
+          );
+          setClickCount(foundEmail?.count || 0);
+        } else {
+          setClickCount(0);
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+    fetchData();
+  }, [axiosPublic, user?.email]);
+  
+  
   const handleLogout = () => {
+    setClickCount(0);
     logOut()
-      .then(() => console.log("Successfull"))
+      .then(() => {
+        console.log("Successfull")
+        navigate('/');
+      })
       .catch((error) => console.log(error));
   };
 
@@ -70,34 +98,41 @@ const Navbar = () => {
               <NavLink to="/ads">Ads</NavLink>
             </li>
             <li>
-              <NavLink to="/dash">Dashboard</NavLink>
+              <NavLink to="/addads">Dashboard</NavLink>
             </li>
             <li>
               <NavLink to="/faq">FAQ?</NavLink>
             </li>
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end flex gap-10">
+          <div>
+            <h1>Reward: {clickCount}</h1>
+          </div>
           <div className="text-white flex flex-col lg:flex-row items-center">
-          {user ? (
-          <>
-            <div className="flex flex-col justify-center items-center">
-              <span>
-                <img className="w-10 rounded-full" src={user.photoURL} alt="" />
-              </span>
-              <span>{user.displayName}</span>
-            </div>
-            <button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
-              <a onClick={handleLogout}>Logout</a>
-            </button>
-          </>
-        ) : (
-          <Link to="/login">
-            <button className="bg-gradient-to-r from-green-800 via-green-600 to-green-800 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
-              Login
-            </button>
-          </Link>
-        )}
+            {user ? (
+              <>
+                <div className="flex flex-col justify-center items-center">
+                  <span>
+                    <img
+                      className="w-10 rounded-full"
+                      src={user.photoURL}
+                      alt=""
+                    />
+                  </span>
+                  <span>{user.displayName}</span>
+                </div>
+                <button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                  <a onClick={handleLogout}>Logout</a>
+                </button>
+              </>
+            ) : (
+              <Link to="/login">
+                <button className="bg-gradient-to-r from-green-800 via-green-600 to-green-800 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

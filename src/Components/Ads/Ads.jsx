@@ -1,36 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import useAuth from "../Authentication/Hook/useAuth";
+import { Link } from "react-router-dom";
 
 const Ads = () => {
   const [clickCount, setClickCount] = useState(0);
+  const [adsData, setAdsData] = useState([]);
+  const { user } = useAuth();
+  const axiosPublic = useAxiosPublic();
 
-  const handleButtonClick = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosPublic.get("/ads");
+        setAdsData(response.data);
+      } catch (error) {
+        console.error("Error fetching ads data:", error);
+      }
+    };
+    fetchData();
+  }, [axiosPublic]);
+  const handleButtonClick = async () => {
     setClickCount(clickCount + 1);
+
+    if (user?.email) {
+      try {
+        await axiosPublic.post("/userinfo", {
+          count: clickCount + 1,
+          userEmail: user.email,
+        });
+        console.log("Data posted to /userinfo successfully!");
+      } catch (error) {
+        console.error("Error posting data to /userinfo:", error);
+      }
+    } else {
+      console.error("User email not available");
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4 border rounded-lg shadow-lg">
-     
-      <div className="mb-4">
-        <img
-          src="https://placekitten.com/400/200" 
-          alt="Advertisement"
-          className="w-full h-auto rounded-lg"
-        />
+    <div className="w-11/12 mx-auto mt-10">
+        <div>
+          <h1 className="text-3xl text-white text-center mb-2">
+            Here are the Products for you:
+          </h1>
+        </div>
+        <div className="grid grid-cols-1 ml-8 md:ml-0 lg:ml-0 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {adsData.length === 0 ? (
+            <div className="col-span-3 mt-20 pb-20">
+              <h1 className="text-center text-3xl text-red-500">
+                No Product available of this brand right now!!!
+              </h1>
+            </div>
+          ) : (
+            adsData.map((product) => (
+              <div
+                key={product._id}
+                className="w-80 h-[400px] bg-slate-200 rounded-lg shadow-xl"
+              >
+                <img src={product.frame} alt="" />
+                <div className="mx-10">
+                  <h1>Name: {product.name}</h1>
+                  <div className="flex justify-between items-center gap-10">
+                    <Link to={`/details/${product._id}`}>
+                      <button className="px-5 py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-teal-500 via-teal-300 to-teal-500">
+                        Details
+                      </button>
+                    </Link>
+                    
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-
-      <div className="text-center">
-        <button
-          onClick={handleButtonClick}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Click Here
-        </button>
-      </div>
-
-      <div className="mt-4 text-center text-gray-600">
-        Click count: {clickCount}
-      </div>
-    </div>
   );
 };
 
