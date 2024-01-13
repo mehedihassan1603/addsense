@@ -39,42 +39,38 @@ const Ads = () => {
   };
 
   return (
-    <div className="w-11/12 mx-auto mt-10">
-        <div>
-          <h1 className="text-3xl text-white text-center mb-2">
-            Here are the Products for you:
-          </h1>
-        </div>
-        <div className="grid grid-cols-1 ml-8 md:ml-0 lg:ml-0 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {adsData.length === 0 ? (
-            <div className="col-span-3 mt-20 pb-20">
-              <h1 className="text-center text-3xl text-red-500">
-                No Product available of this brand right now!!!
-              </h1>
-            </div>
-          ) : (
-            adsData.map((product) => (
-              <div
-                key={product._id}
-                className="w-80 h-[400px] bg-slate-200 rounded-lg shadow-xl"
-              >
-                <img className="h-60" src={product.frame} alt="" />
-                <div className="mx-10">
-                  <h1>Name: {product.name}</h1>
-                  <div className="flex justify-between items-center gap-10">
-                    <Link to={`/details/${product._id}`}>
-                      <button className="px-5 py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-teal-500 via-teal-300 to-teal-500">
-                        Details
-                      </button>
-                    </Link>
-                    
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+    <div className="w-11/12 mx-auto my-10">
+      <div>
+        <h1 className="text-3xl text-white text-center mb-2">
+          Here are the Products for you:
+        </h1>
       </div>
+      <div className="flex flex-col  justify-center gap-10">
+        {adsData.length === 0 ? (
+          <div className="col-span-3 mt-20 pb-20">
+            <h1 className="text-center text-3xl text-red-500">
+              No Product available of this brand right now!!!
+            </h1>
+          </div>
+        ) : (
+          adsData.map((product) => (
+            <div
+              key={product._id}
+              className="flex px-10 items-center justify-between w-full md:w-8/12 mx-auto bg-slate-200 rounded-lg shadow-xl"
+            >
+              <h1>Name: {product.name}</h1>
+              <div className="flex justify-between  items-center gap-10">
+                <Link to={`/details/${product._id}`}>
+                  <button className="px-5 py-2 rounded-3xl text-lg card-hover bg-rose-500 hover:bg-rose-700 text-white">
+                    Play Ads
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
   );
 };
 

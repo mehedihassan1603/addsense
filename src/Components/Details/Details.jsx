@@ -33,15 +33,12 @@ const Details = () => {
     const fetchData = async () => {
       try {
         const response = await axiosPublic.get("/ads");
-        console.log(response)
-        // const findTime = response.data.find(time =>{
-        //   console.log(time.playtime)
-        // });
+        console.log(response);
         const foundProduct = response.data.find((item) => item._id === _id);
-        // console.log(foundProduct.playtime)
+
         if (foundProduct) {
           setProduct(foundProduct);
-          setCountdown(foundProduct.playtime)
+          setCountdown(foundProduct.playtime);
         } else {
           console.error("Product not found");
         }
@@ -79,9 +76,9 @@ const Details = () => {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
           });
-  
+
           setTimeout(() => {
-            navigate('/ads');
+            navigate("/ads");
             window.location.reload();
           }, 2000);
         } else {
@@ -102,23 +99,26 @@ const Details = () => {
   }
 
   return (
-    <div className="py-6">
-      <div className="w-80 h-[400px] bg-slate-200 rounded-lg shadow-xl">
-        <img className="h-40" src={product.frame} alt={product.name} />
-        <div className="mx-10">
-          <h1>Name: {product.name}</h1>
+    <div className="">
+      <div className="flex justify-center gap-10 py-4">
+        <div className="bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
           <h2>Time: {product.playtime}</h2>
+        </div>
+        <div>
           {showButton ? (
             <button
               onClick={handleRewardButtonClick}
-              className="bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded mt-2"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded"
             >
               Get Reward
             </button>
           ) : (
-            <div>Redirecting back in: {countdown} seconds</div>
+            <div className="bg-blue-200 text-gray-600 text-center font-bold py-2 px-4 rounded">Redirecting back in: {countdown} seconds</div>
           )}
         </div>
+      </div>
+      <div className="bg-slate-200 flex justify-center w-full h-auto py-10 rounded-lg shadow-xl">
+        <img src={product.frame} alt={product.name} />
       </div>
       <ToastContainer />
     </div>
