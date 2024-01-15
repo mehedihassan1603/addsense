@@ -73,7 +73,7 @@ const Navbar = () => {
                 <NavLink to="/dash">Dashboard</NavLink>
               </li>
               <li>
-                <NavLink to="/faq">FAQ?</NavLink>
+                <NavLink to="/package">Package</NavLink>
               </li>
             </ul>
           </div>
@@ -98,10 +98,10 @@ const Navbar = () => {
               <NavLink to="/ads">Ads</NavLink>
             </li>
             <li>
-              <NavLink to="/addads">Dashboard</NavLink>
+              <NavLink to="/dashboard">Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/faq">FAQ?</NavLink>
+              <NavLink to="/package">Package</NavLink>
             </li>
           </ul>
         </div>
