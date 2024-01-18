@@ -20,6 +20,9 @@ import Premium from "./Components/AddPackage/Premium.jsx";
 import AllPackage from "./Components/Package/AllPackage.jsx";
 import PaymentSuccess from "./Components/Payment/PaymentSuccess/PaymentSuccess.jsx";
 import PaymentFail from "./Components/Payment/PaymentFailure/PaymentFail.jsx";
+import Success from "./Components/Payment/PaymentSuccess/Success.jsx";
+import PaymentHistory from "./Components/Payment/PaymentHistory/PaymentHistory.jsx";
+import ManualPayment from "./Components/Payment/ManualPayment/ManualPayment.jsx";
 
 const router = createBrowserRouter([
   {
@@ -75,14 +78,26 @@ const router = createBrowserRouter([
         element: <PrivateRoute><AllPackage></AllPackage></PrivateRoute>,
       },
       {
-        path: "/payment-success",
-        element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>,
+        path: "/success",
+        element: <PrivateRoute><Success></Success></PrivateRoute>,
       },
       {
         path: "/payment-fail",
         element: <PrivateRoute><PaymentFail></PaymentFail></PrivateRoute>,
       },
+      {
+        path: "/history",
+        element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>,
+      },
+      {
+        path: "/manual",
+        element: <PrivateRoute><ManualPayment></ManualPayment></PrivateRoute>,
+      },
     ],
+  },
+  {
+    path: "/payment-success",
+    element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>,
   },
 ]);
 

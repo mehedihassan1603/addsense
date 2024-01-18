@@ -11,6 +11,9 @@ const Dashboard = () => {
                 <Link to="/addpackage" className="bg-green-500 hover:bg-green-700 text-white font-bold py-10 px-10 rounded">
                     Create Package
                 </Link>
+                <Link to="/history" className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-10 px-10 rounded">
+                    Payment History
+                </Link>
             </div>
         </div>
     );
