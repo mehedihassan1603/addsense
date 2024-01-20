@@ -23,6 +23,10 @@ import PaymentFail from "./Components/Payment/PaymentFailure/PaymentFail.jsx";
 import Success from "./Components/Payment/PaymentSuccess/Success.jsx";
 import PaymentHistory from "./Components/Payment/PaymentHistory/PaymentHistory.jsx";
 import ManualPayment from "./Components/Payment/ManualPayment/ManualPayment.jsx";
+import AddInfo from "./Components/AddInfo/AddInfo.jsx";
+import ManualHistory from "./Components/ManualHistory/ManualHistory.jsx";
+import MyInfo from "./Components/MyInfo/MyInfo.jsx";
+import AppInfo from "./Components/AppInfo/AppInfo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +96,22 @@ const router = createBrowserRouter([
       {
         path: "/manual",
         element: <PrivateRoute><ManualPayment></ManualPayment></PrivateRoute>,
+      },
+      {
+        path: "/addinfo",
+        element: <PrivateRoute><AddInfo></AddInfo></PrivateRoute>,
+      },
+      {
+        path: "/appinfo",
+        element: <PrivateRoute><AppInfo></AppInfo></PrivateRoute>,
+      },
+      {
+        path: "/number",
+        element: <PrivateRoute><ManualHistory></ManualHistory></PrivateRoute>,
+      },
+      {
+        path: "/myinfo",
+        element: <PrivateRoute><MyInfo></MyInfo></PrivateRoute>,
       },
     ],
   },
