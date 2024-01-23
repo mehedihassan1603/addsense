@@ -83,14 +83,6 @@ const router = createBrowserRouter([
         element: <PrivateRoute><AllPackage></AllPackage></PrivateRoute>,
       },
       {
-        path: "/success",
-        element: <PrivateRoute><Success></Success></PrivateRoute>,
-      },
-      {
-        path: "/payment-fail",
-        element: <PrivateRoute><PaymentFail></PaymentFail></PrivateRoute>,
-      },
-      {
         path: "/history",
         element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>,
       },
@@ -123,6 +115,14 @@ const router = createBrowserRouter([
   {
     path: "/payment-success",
     element: <PrivateRoute><PaymentSuccess></PaymentSuccess></PrivateRoute>,
+  },
+  {
+    path: "/success",
+    element: <PrivateRoute><Success></Success></PrivateRoute>,
+  },
+  {
+    path: "/payment-fail",
+    element: <PrivateRoute><PaymentFail></PaymentFail></PrivateRoute>,
   },
 ]);
 
