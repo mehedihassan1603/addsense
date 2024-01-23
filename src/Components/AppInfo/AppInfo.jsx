@@ -18,6 +18,8 @@ const AppInfo = () => {
     create_payment_url: "",
     execute_payment_url: "",
     backend_callback_url: "",
+    frontend_success_url: "",
+    frontend_fail_url: "",
   });
   useEffect(() => {
     axiosPublic.get('/appinfo')
@@ -34,21 +36,24 @@ const AppInfo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(product);
-    axiosPublic.post('/appinfo', product)
+    
+    console.log("Product ID:", product._id);
+    axiosPublic.put(`/appinfo/${product._id}`, product)
       .then(res => {
-        if (res.data.insertedId) {
-          console.log('user added');
-          toast.success("Add successfully!", {
+        if (res.data.modifiedCount > 0) {
+          console.log('appinfo updated');
+          toast.success("Update successful!", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
           });
 
           setTimeout(() => {
-            e.target.reset();
             navigate("/");
           }, 2000);
         }
+      })
+      .catch(error => {
+        console.error('Error updating appinfo:', error);
       });
   };
 
@@ -185,6 +190,34 @@ const AppInfo = () => {
             id="backend_callback_url"
             name="backend_callback_url"
             value={product.backend_callback_url}
+            required
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="backend_callback_url" className="block text-gray-600">
+          Frontend Success url:
+          </label>
+          <input
+            type="text"
+            id="frontend_success_url"
+            name="frontend_success_url"
+            value={product.frontend_success_url}
+            required
+            onChange={handleChange}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="backend_callback_url" className="block text-gray-600">
+          Frontend fail url:
+          </label>
+          <input
+            type="text"
+            id="frontend_fail_url"
+            name="frontend_fail_url"
+            value={product.frontend_fail_url}
             required
             onChange={handleChange}
             className="w-full border p-2 rounded-md"
