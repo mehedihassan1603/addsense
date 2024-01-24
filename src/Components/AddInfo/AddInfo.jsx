@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,28 +11,50 @@ const AddInfo = () => {
   const [product, setProduct] = useState({
     text: "",
     number: "",
+    defaultRate: "",
   });
+
+  useEffect(() => {
+    axiosPublic.get('/addinfo')
+      .then(res => {
+        if (res.data.length > 0) {
+          setProduct(res.data[0]);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching appinfo:', error);
+      });
+  }, [axiosPublic]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(product);
-
-    axiosPublic.post('/addinfo', product)
-        .then(res =>{
-          if(res.data.insertedId){
-            console.log('user added')
-            toast.success("Info Updated successfully!", {
-              position: toast.POSITION.TOP_CENTER,
-              autoClose: 2000,
-            });
-    
-            setTimeout(() => {
-              e.target.reset();  
-              navigate("/");
-            }, 2000);
-          }
-        })
+  
+    axiosPublic.post('/addinfo', {
+      text: product.text,
+      number: product.number,
+      defaultRate: product.defaultRate,
+    })
+    .then(res => {
+      if (res.data.insertedId) {
+        console.log('New item added with ID:', res.data.insertedId);
+        toast.success("Info Added successfully!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+        });
+  
+        setTimeout(() => {
+          e.target.reset();
+          navigate("/");
+        }, 2000);
+      }
+    })
+    .catch(error => {
+      console.error("Error posting data to /addinfo:", error);
+    });
   };
+  
+  
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +77,7 @@ const AddInfo = () => {
             name="text"
             required
             onChange={handleChange}
+            value={product.text}
             className="w-full border p-2 rounded-md"
           />
         </div>
@@ -68,10 +91,25 @@ const AddInfo = () => {
             name="number"
             required
             onChange={handleChange}
+            value={product.number}
             className="w-full border p-2 rounded-md"
           />
         </div>
-        
+        <div className="mb-4">
+          <label htmlFor="defaultRate" className="block text-gray-600">
+            Default Rate:
+          </label>
+          <input
+            type="number"
+            id="defaultRate"
+            name="defaultRate"
+            required
+            onChange={handleChange}
+            value={product.defaultRate}
+            className="w-full border p-2 rounded-md"
+          />
+        </div>
+
         <div className="flex justify-center items-center">
           <button
             type="submit"

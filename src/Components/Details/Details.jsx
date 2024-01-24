@@ -66,10 +66,18 @@ const Details = () => {
   const handleRewardButtonClick = async () => {
     if (user?.email) {
       try {
+        // Fetch user rate
         const rateResponse = await axiosPublic.get("/userinfo");
         const userRate = rateResponse.data.find(item => item.userEmail === user.email)?.rate;
-        console.log(userRate)
-        const rateValue = userRate !== undefined ? userRate : null;
+        console.log("User Rate:", userRate);
+  
+        // Fetch default rate
+        const defaultRateResponse = await axiosPublic.get("/addinfo");
+        const defaultRate = defaultRateResponse.data[0]?.defaultRate;
+        console.log("Default Rate:", defaultRate);
+  
+        // Determine the rateValue based on userRate or defaultRate
+        const rateValue = userRate !== undefined ? userRate : defaultRate;
   
         setClickCount((prevCount) => prevCount + 1);
   
@@ -86,8 +94,8 @@ const Details = () => {
           });
   
           setTimeout(() => {
-            navigate("/ads");
-            window.location.reload();
+            // navigate("/ads");
+            // window.location.reload();
           }, 2000);
         } else {
           console.error("Error posting data to /userinfo:", response.data);
@@ -101,6 +109,7 @@ const Details = () => {
       console.error("User email not available");
     }
   };
+  
   
 
   if (!product) {
