@@ -24,16 +24,10 @@ const PaymentSuccess = () => {
         const response = await axiosPublic.post("/userinfo", {
           userEmail: user.email,
           count: newCount,
+          rate: 1,
         });
         if (response.status === 200) {
-          
-        // if (response.status === 200) {
-        //   toast.success("Credit Successfully added to your balance", {
-        //     position: toast.POSITION.TOP_CENTER,
-        //     autoClose: 100,
-        //   });
-
-          setTimeout(() => {
+         setTimeout(() => {
           navigate("/success");
             window.location.reload();
           }, 100);

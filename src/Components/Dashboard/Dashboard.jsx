@@ -29,6 +29,9 @@ const Dashboard = () => {
                 <Link to="/sms" className="bg-stone-700 hover:bg-stone-800 text-white font-bold py-10 px-10 rounded">
                     SMS
                 </Link>
+                <Link to="/userinfo" className="bg-red-700 hover:bg-red-800 text-white font-bold py-10 px-10 rounded">
+                    Users
+                </Link>
             </div>
         </div>
     );

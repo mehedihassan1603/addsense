@@ -28,6 +28,7 @@ import ManualHistory from "./Components/ManualHistory/ManualHistory.jsx";
 import MyInfo from "./Components/MyInfo/MyInfo.jsx";
 import AppInfo from "./Components/AppInfo/AppInfo.jsx";
 import SmsForm from "./Components/SMS/SmsForm.jsx";
+import Users from "./Components/Users/Users.jsx";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: "/sms",
         element: <PrivateRoute><SmsForm></SmsForm></PrivateRoute>,
+      },
+      {
+        path: "/userinfo",
+        element: <PrivateRoute><Users></Users></PrivateRoute>,
       },
     ],
   },

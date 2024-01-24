@@ -22,7 +22,7 @@ const Details = () => {
         const foundEmail = updatedCount.data.find(
           (item) => item.userEmail === user.email
         );
-        setClickCount(foundEmail.count);
+        setClickCount(parseFloat(foundEmail.count));
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -66,17 +66,25 @@ const Details = () => {
   const handleRewardButtonClick = async () => {
     if (user?.email) {
       try {
+        const rateResponse = await axiosPublic.get("/userinfo");
+        const userRate = rateResponse.data.find(item => item.userEmail === user.email)?.rate;
+        console.log(userRate)
+        const rateValue = userRate !== undefined ? userRate : null;
+  
         setClickCount((prevCount) => prevCount + 1);
+  
         const response = await axiosPublic.post("/userinfo", {
           count: clickCount + 1,
           userEmail: user.email,
+          rate: rateValue,
         });
+  
         if (response.status === 200) {
           toast.success("Reward gain successful!", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
           });
-
+  
           setTimeout(() => {
             navigate("/ads");
             window.location.reload();
@@ -93,6 +101,7 @@ const Details = () => {
       console.error("User email not available");
     }
   };
+  
 
   if (!product) {
     return <div>Loading...</div>;

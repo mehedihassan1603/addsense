@@ -1,13 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import useAuth from "../Authentication/Hook/useAuth";
 
 const SmsForm = () => {
   const [recipient, setRecipient] = useState("");
   const [senderId, setSenderId] = useState("");
   const [message, setMessage] = useState("");
   const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+
+  const updateCount = async () => {
+    try {
+      const getCurrentCount = await axiosPublic.get("/userinfo");
+      const foundEmail = getCurrentCount.data.find(
+        (item) => item.userEmail === user.email
+      );
+      console.log(typeof(foundEmail.count))
+      const currentCount = foundEmail ? foundEmail.count : 0;
+      const newCount = currentCount - foundEmail.rate;
+      console.log("User count before update:", currentCount);
+      
+
+      const response = await axiosPublic.post("/userinfo", {
+        userEmail: user.email,
+        count: newCount,
+        rate: foundEmail.rate,
+      });
+
+      if (response.status === 200) {
+        console.log("User count updated successfully!");
+        console.log("User count after update:", newCount);
+      } else {
+        console.error(
+          "Failed to update user count value:",
+          response.data
+        );
+      }
+    } catch (error) {
+      console.error("Error updating user count value:", error);
+    }
+  };
 
   const handleSendSMS = () => {
     if (!recipient || !message) {
@@ -23,19 +57,21 @@ const SmsForm = () => {
         message,
       })
       .then((response) => {
-        console.log(response.data);
+        console.log("SMS sending response:", response.data);
 
         if (response.data.response.status === "success") {
           toast.success("SMS sent successfully!");
-          setRecipient("");
-          setSenderId("");
-          setMessage("");
+          console.log("User count before update:", response.data.count);
+          updateCount();
+          setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         } else {
           toast.error("Error sending SMS. Please try again.");
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error sending SMS:", error);
         toast.error("Error sending SMS. Please try again.");
       });
   };
@@ -81,7 +117,7 @@ const SmsForm = () => {
       >
         Send SMS
       </button>
-      <ToastContainer></ToastContainer>
+      <ToastContainer />
     </div>
   );
 };
