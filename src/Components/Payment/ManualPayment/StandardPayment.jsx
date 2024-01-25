@@ -5,7 +5,7 @@ import moment from "moment";
 import useAxiosPublic from "../../Authentication/Hook/useAxiosPublic";
 import useAuth from "../../Authentication/Hook/useAuth";
 
-const ManualPayment = () => {
+const StandardPayment = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const [product, setProduct] = useState({
@@ -23,7 +23,7 @@ const ManualPayment = () => {
       setText(res.data);
     });
 
-    axiosPublic.get("/package").then((res) => {
+    axiosPublic.get("/standard").then((res) => {
       const packageAmount = res.data.find((item) => item.price);
       console.log(packageAmount)
       setAmounts(packageAmount)
@@ -113,4 +113,4 @@ const ManualPayment = () => {
   );
 };
 
-export default ManualPayment;
+export default StandardPayment;

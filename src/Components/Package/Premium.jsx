@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import { Link } from "react-router-dom";
 
 const Premium = () => {
   const [basic, setBasic] = useState([]);
@@ -20,12 +20,13 @@ const Premium = () => {
     fetchData();
   }, [axiosPublic]);
 
-  const purchaseHandler = async (price) => {
+  const purchaseHandler = async (price, email) => {
     try {
       const result = await axiosPublic.post("api/bkash/create", {
         transactionId: uuidv4(),
         amount: price,
       });
+
       if (result?.data?.status) {
         window.location.href = result?.data?.data?.data?.bkashURL;
       } else {
@@ -46,16 +47,48 @@ const Premium = () => {
           </div>
           <h2 className="text-base mt-12">{plan.details}</h2>
           <p className="my-4 text-base">
-            You can get <span className=" font-bold">{plan.amount}</span> credit.
+            You can get <span className=" font-bold">{plan.amount}</span>{" "}
+            credit.
           </p>
 
           <div className="flex justify-center">
-          <button
-            className="bg-white text-rose-500 px-3 py-2 rounded-md hover:bg-rose-400 hover:text-white"
-            onClick={() => purchaseHandler(plan.price)}
-          >
-            Buy Now
-          </button>
+            <div>
+              <button
+                className="btn"
+                onClick={() =>
+                  document.getElementById("my_modal_6").showModal()
+                }
+              >
+                Buy Now
+              </button>
+              <dialog
+                id="my_modal_6"
+                className="modal modal-bottom sm:modal-middle "
+              >
+                <div className="bg-amber-400 p-10 space-y-10 rounded-lg">
+                  <div>
+                  <Link className="text-black border-2 w-full border-rose-600 rounded-md px-4 py-2 hover:bg-rose-600 hover:text-white" to="/premiumpay">
+                    Payment Manually
+                  </Link>
+                  </div>
+                  <div>
+                  <button
+                className="text-black border-2 w-full border-red-600 rounded-md px-4 py-2 hover:bg-red-600 hover:text-white"
+                onClick={() => purchaseHandler(plan.price)}
+              >
+                Pay with Bkash
+              </button>
+                  </div>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      <button className="btn bg-red-600 text-white hover:text-black">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+              
+              
+            </div>
           </div>
         </div>
       ))}

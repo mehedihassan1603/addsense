@@ -29,6 +29,8 @@ import MyInfo from "./Components/MyInfo/MyInfo.jsx";
 import AppInfo from "./Components/AppInfo/AppInfo.jsx";
 import SmsForm from "./Components/SMS/SmsForm.jsx";
 import Users from "./Components/Users/Users.jsx";
+import StandardPayment from "./Components/Payment/ManualPayment/StandardPayment.jsx";
+import PremiumPayment from "./Components/Payment/ManualPayment/PremiumPayment.jsx";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +92,14 @@ const router = createBrowserRouter([
       {
         path: "/manual",
         element: <PrivateRoute><ManualPayment></ManualPayment></PrivateRoute>,
+      },
+      {
+        path: "/standardpay",
+        element: <PrivateRoute><StandardPayment></StandardPayment></PrivateRoute>,
+      },
+      {
+        path: "/premiumpay",
+        element: <PrivateRoute><PremiumPayment></PremiumPayment></PrivateRoute>,
       },
       {
         path: "/addinfo",
