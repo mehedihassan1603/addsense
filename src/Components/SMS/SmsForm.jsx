@@ -78,7 +78,10 @@ const SmsForm = () => {
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow-md">
+      <div className="flex justify-between items-center">
       <h2 className="text-2xl font-bold mb-4">SMS Form</h2>
+      <a href="/myinfo" className="text-xl font-bold mb-4 px-3 py-2 hover:bg-slate-600 hover:text-white hover:rounded-md">History</a>
+      </div>
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-600">
           Recipient:

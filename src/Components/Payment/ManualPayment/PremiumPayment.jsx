@@ -8,15 +8,15 @@ import useAuth from "../../Authentication/Hook/useAuth";
 const PremiumPayment = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
+  const [amounts, setAmounts] = useState("");
   const [product, setProduct] = useState({
     number: "",
     transactionId: "",
-    amount: "",
+    amount: amounts.price,
     userEmail: user.email,
     time: moment().format("MMMM Do YYYY, h:mm:ss a"),
     status: "pending",
   });
-  const [amounts, setAmounts] = useState("");
   const [text, setText] = useState([]);
   useEffect(() => {
     axiosPublic.get("/addinfo").then((res) => {
@@ -35,7 +35,14 @@ const PremiumPayment = () => {
     e.preventDefault();
     console.log(product);
 
-    axiosPublic.post("/number", product).then((res) => {
+    const productWithAmount = {
+      ...product,
+      amount: amounts && amounts.price !== undefined ? amounts.price : 0,
+    };
+
+    console.log(productWithAmount);
+
+    axiosPublic.post("/number", productWithAmount).then((res) => {
       if (res.data.insertedId) {
         console.log("user added");
         toast.success("Submitted successfully! Wait for a minute.", {
@@ -74,6 +81,7 @@ const PremiumPayment = () => {
             className="border border-gray-300 p-2 w-full"
             type="number"
             name="number"
+            required
             onChange={handleChange}
           />
         </div>
@@ -85,6 +93,7 @@ const PremiumPayment = () => {
             className="border border-gray-300 p-2 w-full"
             type="text"
             name="transactionId"
+            required
             onChange={handleChange}
           />
         </div>

@@ -103,6 +103,9 @@ const Navbar = () => {
             <li>
               <NavLink to="/package">Package</NavLink>
             </li>
+            <li>
+              <NavLink to="/sms">SMS</NavLink>
+            </li>
           </ul>
         </div>
         <div className="navbar-end flex gap-10">

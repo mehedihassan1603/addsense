@@ -107,9 +107,7 @@ const Register = () => {
               className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
             ></input>
             {passwordError && <p className="text-red-500">{passwordError}</p>}{" "}
-            {/* Display password error message */}
           </div>
-
           <div className="mt-6">
             <button
               type="submit"

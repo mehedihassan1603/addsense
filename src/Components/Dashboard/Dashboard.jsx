@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
-        <div className="text-center">
+        <div className="text-center bg-slate-400">
             <div className="grid grid-cols-3 gap-10 w-full md:w-4/6 mx-auto  px-6 py-6">
                 <Link to="/addads" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-10 px-10 rounded">
                     Create Ads
@@ -22,12 +22,6 @@ const Dashboard = () => {
                 </Link>
                 <Link to="/appinfo" className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-10 px-10 rounded">
                     APP INFO
-                </Link>
-                <Link to="/myinfo" className="bg-violet-500 hover:bg-violet-700 text-white font-bold py-10 px-10 rounded">
-                    MY INFO
-                </Link>
-                <Link to="/sms" className="bg-stone-700 hover:bg-stone-800 text-white font-bold py-10 px-10 rounded">
-                    SMS
                 </Link>
                 <Link to="/userinfo" className="bg-red-700 hover:bg-red-800 text-white font-bold py-10 px-10 rounded">
                     Users

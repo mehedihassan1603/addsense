@@ -31,6 +31,7 @@ import SmsForm from "./Components/SMS/SmsForm.jsx";
 import Users from "./Components/Users/Users.jsx";
 import StandardPayment from "./Components/Payment/ManualPayment/StandardPayment.jsx";
 import PremiumPayment from "./Components/Payment/ManualPayment/PremiumPayment.jsx";
+import AdminRoute from "./Components/Dashboard/AdminRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+        element: <AdminRoute><Dashboard></Dashboard></AdminRoute>,
       },
       {
         path: "/ADDPACKAGE",
