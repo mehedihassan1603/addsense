@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
@@ -10,72 +10,98 @@ const SmsForm = () => {
   const [message, setMessage] = useState("");
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
+  const [charCount, setCharCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(1);
+  const [currentCount, setCurrentCount] = useState(0);
 
-  const updateCount = async () => {
+  const fetchCurrentCount = async () => {
     try {
-      const getCurrentCount = await axiosPublic.get("/userinfo");
-      const foundEmail = getCurrentCount.data.find(
+      const response = await axiosPublic.get("/userinfo");
+      const foundEmail = response.data.find(
         (item) => item.userEmail === user.email
       );
-      console.log(typeof(foundEmail.count))
-      const currentCount = foundEmail ? foundEmail.count : 0;
-      const newCount = currentCount - foundEmail.rate;
-      console.log("User count before update:", currentCount);
-      
-
+      const count = foundEmail ? foundEmail.count : 0;
+      setCurrentCount(count);
+    } catch (error) {
+      console.error("Error fetching current count:", error);
+    }
+  };
+  
+  const updateCount = async (newCount, foundEmail) => {
+    try {
       const response = await axiosPublic.post("/userinfo", {
         userEmail: user.email,
         count: newCount,
         rate: foundEmail.rate,
       });
-
+  
       if (response.status === 200) {
         console.log("User count updated successfully!");
-        console.log("User count after update:", newCount);
       } else {
-        console.error(
-          "Failed to update user count value:",
-          response.data
-        );
+        console.error("Failed to update user count value:", response.data);
       }
     } catch (error) {
       console.error("Error updating user count value:", error);
     }
   };
+  
 
-  const handleSendSMS = () => {
-    if (!recipient || !message) {
-      toast.error("Please fill in both recipient and message fields.");
-      return;
-    }
-
-    axiosPublic
-      .post("/send-sms", {
-        recipient,
-        sender_id: senderId,
-        type: "plain",
-        message,
-      })
-      .then((response) => {
+  const handleSendSMS = async () => {
+    try {
+      const getCurrentCount = await axiosPublic.get("/userinfo");
+      const foundEmail = getCurrentCount.data.find(
+        (item) => item.userEmail === user.email
+      );
+      const count = foundEmail ? foundEmail.count : 0;
+      console.log(count);
+      console.log(foundEmail)
+      const rate = foundEmail.rate * messageCount;
+      console.log(rate)
+      if (count >= rate) {
+        const response = await axiosPublic.post("/send-sms", {
+          recipient,
+          sender_id: senderId,
+          type: "plain",
+          message,
+        });
+  
         console.log("SMS sending response:", response.data);
-
+  
         if (response.data.response.status === "success") {
           toast.success("SMS sent successfully!");
-          console.log("User count before update:", response.data.count);
-          updateCount();
+          const newCount = count - rate;
+          updateCount(newCount, foundEmail);
           setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+            window.location.reload();
+          }, 2000);
         } else {
           toast.error("Error sending SMS. Please try again.");
         }
-      })
-      .catch((error) => {
-        console.error("Error sending SMS:", error);
-        toast.error("Error sending SMS. Please try again.");
-      });
+      } else {
+        toast.error("You do not have enough balance to send an SMS.");
+      }
+    } catch (error) {
+      console.error("Error handling send SMS:", error);
+      toast.error("Error sending SMS. Please try again.");
+    }
   };
-
+  
+  const handleInputChange = (e) => {
+    const inputText = e.target.value;
+    setMessage(inputText);
+    setCharCount(inputText.length);
+    const newMessageCount = Math.ceil(inputText.length / 160);
+    setMessageCount(newMessageCount);
+  };
+  const handleChange = (e) => {
+    const inputText = e.target.value;
+    const formattedRecipient = inputText.startsWith("880")
+      ? inputText
+      : `88${inputText}`;
+    setRecipient(formattedRecipient);
+    
+  };
+  
   return (
     <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow-md">
       <div className="flex justify-between items-center">
@@ -89,7 +115,7 @@ const SmsForm = () => {
         <input
           type="text"
           value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
+          onChange={handleChange}
           className="mt-1 p-2 border rounded w-full"
         />
       </div>
@@ -110,9 +136,13 @@ const SmsForm = () => {
         </label>
         <textarea
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleInputChange}
           className="mt-1 p-2 border rounded w-full"
         />
+      </div>
+      <div className="mb-4 flex justify-between text-sm text-gray-500">
+        <p>Character: {charCount} / 160</p>
+        <p>Message: {messageCount}</p>
       </div>
       <button
         onClick={handleSendSMS}
