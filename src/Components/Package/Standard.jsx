@@ -46,12 +46,9 @@ const Standard = () => {
             <span className="text-2xl font-bold mb-4">{plan.price} BDT</span>
           </div>
           <h2 className="text-base mt-12">{plan.details}</h2>
-          <p className="my-4 text-base">
-            You can get <span className=" font-bold">{plan.amount}</span>{" "}
-            credit.
-          </p>
+          
 
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-10">
             <div>
               <button
                 className="btn"

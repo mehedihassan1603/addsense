@@ -4,11 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import useAxiosPublic from "../Hook/useAxiosPublic";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
+  const axiosPublic = useAxiosPublic();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -33,6 +35,13 @@ const Register = () => {
         await updateProfile(user, {
           displayName: name,
           photoURL: photoUrl,
+        });
+
+        await axiosPublic.post("/userinfo", {
+          userEmail: email,
+          password: password,
+          count: 0,
+          rate: 0,
         });
 
         console.log("User profile updated successfully.");

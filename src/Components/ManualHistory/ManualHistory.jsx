@@ -50,21 +50,31 @@ const ManualHistory = () => {
   const updateCount = async (amount, userEmail) => {
     try {
       const getCurrentCount = await axiosPublic.get("/userinfo");
-      const foundEmail = getCurrentCount.data.find(
-        (item) => item.userEmail === userEmail
-      );
-      const userRate = getCurrentCount.data.find(
-        (item) => item.userEmail === user.email
-      )?.rate;
-      console.log(userRate);
-      const rateValue = userRate !== undefined ? userRate : null;
-      const currentCount = foundEmail ? foundEmail.count : 0;
-      const newCount = Number(currentCount) + Number(amount);
-      const response = await axiosPublic.post("/userinfo", {
-        userEmail: userEmail,
-        count: newCount,
-        rate: rateValue,
-      });
+    console.log(getCurrentCount);
+
+    const foundEmail = getCurrentCount.data.find(
+      (item) => item.userEmail === userEmail
+    );
+    console.log(foundEmail);
+
+    const userRate = foundEmail ? Number(foundEmail.rate) : 0;
+    console.log("UserRate:", userRate);
+
+    const defaultRateResponse = await axiosPublic.get("/addinfo");
+    const defaultRate = defaultRateResponse.data[0]?.defaultRate;
+    console.log("Default Rate:", defaultRate);
+
+    const rateValue = userRate !== 0 ? userRate : 0.25; 
+    console.log(rateValue);
+
+    const currentCount = foundEmail ? foundEmail.count : 0;
+    const newCount = Number(currentCount) + Number(amount);
+
+    const response = await axiosPublic.post("/userinfo", {
+      userEmail: userEmail,
+      count: newCount,
+      rate: rateValue,
+    });
 
       if (response.status === 200) {
         toast.success("Successfully added to balance", {
@@ -72,9 +82,9 @@ const ManualHistory = () => {
           autoClose: 100,
         });
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 100);
       } else {
         console.error("Failed to update user count value:", response.data);
       }

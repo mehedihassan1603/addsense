@@ -66,18 +66,14 @@ const Details = () => {
   const handleRewardButtonClick = async () => {
     if (user?.email) {
       try {
-        // Fetch user rate
         const rateResponse = await axiosPublic.get("/userinfo");
         const userRate = rateResponse.data.find(item => item.userEmail === user.email)?.rate;
         console.log("User Rate:", userRate);
-  
-        // Fetch default rate
         const defaultRateResponse = await axiosPublic.get("/addinfo");
         const defaultRate = defaultRateResponse.data[0]?.defaultRate;
         console.log("Default Rate:", defaultRate);
-  
-        // Determine the rateValue based on userRate or defaultRate
-        const rateValue = userRate !== undefined ? userRate : defaultRate;
+        const rateValue = userRate !== 0 ? userRate : defaultRate;
+        console.log("Rate Value",rateValue)
   
         setClickCount((prevCount) => prevCount + 1);
   
