@@ -32,6 +32,7 @@ import Users from "./Components/Users/Users.jsx";
 import StandardPayment from "./Components/Payment/ManualPayment/StandardPayment.jsx";
 import PremiumPayment from "./Components/Payment/ManualPayment/PremiumPayment.jsx";
 import AdminRoute from "./Components/Dashboard/AdminRoute.jsx";
+import OthersInfo from "./Components/OthersInfo/OthersInfo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
       {
         path: "/addinfo",
         element: <PrivateRoute><AddInfo></AddInfo></PrivateRoute>,
+      },
+      {
+        path: "/othersinfo",
+        element: <PrivateRoute><OthersInfo></OthersInfo></PrivateRoute>,
       },
       {
         path: "/appinfo",
