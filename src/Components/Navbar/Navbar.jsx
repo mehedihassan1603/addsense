@@ -67,9 +67,6 @@ const Navbar = () => {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <NavLink to="/ads">Ads</NavLink>
-              </li>
-              <li>
                 <NavLink to="/dash">Dashboard</NavLink>
               </li>
               <li>
@@ -95,9 +92,6 @@ const Navbar = () => {
               <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/ads">Ads</NavLink>
-            </li>
-            <li>
               <NavLink to="/dashboard">Dashboard</NavLink>
             </li>
             <li>
@@ -115,17 +109,17 @@ const Navbar = () => {
           <div className="text-white flex flex-col lg:flex-row items-center">
             {user ? (
               <>
-                <div className="flex flex-col justify-center items-center">
+                <Link to="/profile" className="flex flex-col justify-center items-center">
                   <span>
                     <img
-                      className="w-10 rounded-full"
+                      className="w-8 rounded-full"
                       src={user.photoURL}
                       alt=""
                     />
                   </span>
-                  <span>{user.displayName}</span>
-                </div>
-                <button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                  <span className="text-xs">{user.displayName}</span>
+                </Link>
+                <button className="text-sm bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
                   <a onClick={handleLogout}>Logout</a>
                 </button>
               </>

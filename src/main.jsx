@@ -33,6 +33,8 @@ import StandardPayment from "./Components/Payment/ManualPayment/StandardPayment.
 import PremiumPayment from "./Components/Payment/ManualPayment/PremiumPayment.jsx";
 import AdminRoute from "./Components/Dashboard/AdminRoute.jsx";
 import OthersInfo from "./Components/OthersInfo/OthersInfo.jsx";
+import Profile from "./Components/Profile.jsx/Profile.jsx";
+import User from "./Components/Profile.jsx/User.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +43,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>,
+        element: <Ads></Ads>,
       },
       {
         path: "/login",
@@ -144,6 +146,16 @@ const router = createBrowserRouter([
   {
     path: "/payment-fail",
     element: <PrivateRoute><PaymentFail></PaymentFail></PrivateRoute>,
+  },
+  {
+    path: "/profile",
+    element: <Profile></Profile>,
+    children: [
+      {
+        path:"user",
+        element:<User></User>
+      }
+    ]
   },
 ]);
 
