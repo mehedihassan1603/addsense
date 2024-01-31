@@ -12,6 +12,7 @@ const AddInfo = () => {
     text: "",
     number: "",
     defaultRate: "",
+    senderId: "",
   });
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const AddInfo = () => {
       text: product.text,
       number: product.number,
       defaultRate: product.defaultRate,
+      senderId: product.senderId,
     })
     .then(res => {
       if (res.data.insertedId) {
@@ -107,6 +109,20 @@ const AddInfo = () => {
             onChange={handleChange}
             value={product.defaultRate}
             className="w-full border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="senderId" className="block text-gray-600">
+            Sender Id
+          </label>
+          <input 
+          type="text"
+          id="senderId"
+          name="senderId"
+          required
+          onChange={handleChange}
+          value={product.senderId}
+          className="w-full border p-2 rounded-md"
           />
         </div>
 

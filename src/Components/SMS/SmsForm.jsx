@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
@@ -13,6 +13,9 @@ const SmsForm = () => {
   const [charCount, setCharCount] = useState(0);
   const [messageCount, setMessageCount] = useState(1);
   const [currentCount, setCurrentCount] = useState(0);
+  const isEnglish = (text) =>
+    /^[a-zA-Z0-9\s\+\-\*\/.,"'`{}(&%@#$!^?><:;]+$/u.test(text);
+  const [takeSenderId, setTakeSenderId] = useState(0);
 
   const fetchCurrentCount = async () => {
     try {
@@ -26,7 +29,20 @@ const SmsForm = () => {
       console.error("Error fetching current count:", error);
     }
   };
-  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axiosPublic.get("/addinfo");
+        console.log(response.data);
+        const data = response.data.find((item) => item.senderId);
+        console.log(data.senderId);
+        setTakeSenderId(data.senderId);
+      } catch (error) {
+        console.error("Error fetching user information:", error);
+      }
+    };
+    fetchUsers();
+  }, [axiosPublic]);
   const updateCount = async (newCount, foundEmail) => {
     try {
       const response = await axiosPublic.post("/userinfo", {
@@ -34,7 +50,7 @@ const SmsForm = () => {
         count: newCount,
         rate: foundEmail.rate,
       });
-  
+
       if (response.status === 200) {
         console.log("User count updated successfully!");
       } else {
@@ -44,7 +60,6 @@ const SmsForm = () => {
       console.error("Error updating user count value:", error);
     }
   };
-  
 
   const handleSendSMS = async () => {
     try {
@@ -54,19 +69,19 @@ const SmsForm = () => {
       );
       const count = foundEmail ? foundEmail.count : 0;
       console.log(count);
-      console.log(foundEmail)
+      console.log(foundEmail);
       const rate = foundEmail.rate * messageCount;
-      console.log(rate)
+      console.log(rate);
       if (count >= rate) {
         const response = await axiosPublic.post("/send-sms", {
           recipient,
-          sender_id: senderId,
+          sender_id: takeSenderId,
           type: "plain",
           message,
         });
-  
+
         console.log("SMS sending response:", response.data);
-  
+
         if (response.data.response.status === "success") {
           toast.success("SMS sent successfully!");
           const newCount = count - rate;
@@ -85,49 +100,61 @@ const SmsForm = () => {
       toast.error("Error sending SMS. Please try again.");
     }
   };
-  
+
   const handleInputChange = (e) => {
     const inputText = e.target.value;
     setMessage(inputText);
     setCharCount(inputText.length);
-    const newMessageCount = Math.ceil(inputText.length / 160);
-    setMessageCount(newMessageCount);
+
+    if (isEnglish(inputText)) {
+      const newMessageCount = Math.ceil(inputText.length / 160);
+      setMessageCount(newMessageCount);
+    } else {
+      const newMessageCount = Math.ceil(inputText.length / 69);
+      setMessageCount(newMessageCount);
+    }
   };
   const handleChange = (e) => {
     const inputText = e.target.value;
-    const formattedRecipient = inputText.startsWith("880")
-      ? inputText
-      : `88${inputText}`;
-    setRecipient(formattedRecipient);
-    
+
+    // Check if the input starts with "88"
+    if (inputText.startsWith("88")) {
+      setRecipient(inputText);
+    } else {
+      // If not, add "88" to the beginning of the input
+      setRecipient(`88${inputText}`);
+    }
   };
-  
+
   return (
     <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow-md">
       <div className="flex justify-between items-center">
-      <h2 className="text-2xl font-bold mb-4">SMS Form</h2>
-      <a href="/myinfo" className="text-xl font-bold mb-4 px-3 py-2 hover:bg-slate-600 hover:text-white hover:rounded-md">History</a>
+        <h2 className="text-2xl font-bold mb-4">SMS Form</h2>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-600">
-          Recipient:
-        </label>
-        <input
-          type="text"
-          value={recipient}
-          onChange={handleChange}
-          className="mt-1 p-2 border rounded w-full"
-        />
-      </div>
+  <label className="block text-sm font-medium text-gray-600">
+    Recipient:
+  </label>
+  <div className="relative justify-center">
+    <span className="absolute left-2 top-1/4 text-lg text-black">88</span>
+    <input
+      type="text"
+      value={recipient.replace(/^88/, '')} // Remove "88" if it appears at the beginning
+      onChange={handleChange}
+      className="pl-8 mt-1 p-2 border rounded w-full bg-slate-300 text-lg"
+    />
+  </div>
+</div>
+
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-600">
           Sender ID:
         </label>
         <input
           type="text"
-          value={senderId}
-          onChange={(e) => setSenderId(e.target.value)}
-          className="mt-1 p-2 border rounded w-full"
+          value={takeSenderId}
+          readOnly
+          className="mt-1 p-2 border rounded w-full bg-slate-300"
         />
       </div>
       <div className="mb-4">
@@ -137,11 +164,13 @@ const SmsForm = () => {
         <textarea
           value={message}
           onChange={handleInputChange}
-          className="mt-1 p-2 border rounded w-full"
+          className="mt-1 p-2 border rounded w-full bg-slate-300"
         />
       </div>
       <div className="mb-4 flex justify-between text-sm text-gray-500">
-        <p>Character: {charCount} / 160</p>
+        <p>
+          Character: {charCount} / {isEnglish(message) ? 160 : 69}
+        </p>
         <p>Message: {messageCount}</p>
       </div>
       <button

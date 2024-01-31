@@ -58,6 +58,7 @@ const Users = () => {
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="py-2 px-4">User Email</th>
+            <th className="py-2 px-4">Password</th>
             <th className="py-2 px-4">Count</th>
             <th className="py-2 px-4">SMS Rate</th>
             <th className="py-2 px-4">Actions</th>
@@ -67,6 +68,7 @@ const Users = () => {
           {users.map((user) => (
             <tr key={user._id}>
               <td className="py-2 px-4">{user.userEmail}</td>
+              <td className="py-2 px-4">{user.password}</td>
               <td className="py-2 px-4">{user.count}</td>
               <td className="py-2 px-4">
                 {editingUserId === user._id ? (
