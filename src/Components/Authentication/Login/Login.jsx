@@ -62,11 +62,11 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-sky-900">
-      <div className="bg-fuchsia-500 p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-semibold mb-4">Login</h1>
-        <form onSubmit={handleLogin}>
-          <div className="mb-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-500 to-blue-600">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 className="text-2xl font-semibold mb-4 text-center">Login</h1>
+        <form onSubmit={handleLogin} className="grid grid-cols-2 gap-4">
+          <div className="col-span-2 mb-4">
             <label htmlFor="email" className="block text-gray-700 font-medium">
               Email
             </label>
@@ -79,7 +79,8 @@ const Login = () => {
             />
             {emailError && <p className="text-red-500">{emailError}</p>}
           </div>
-          <div className="mb-4">
+
+          <div className="col-span-2 mb-4">
             <label
               htmlFor="password"
               className="block text-gray-700 font-medium"
@@ -95,7 +96,8 @@ const Login = () => {
             />
             {passwordError && <p className="text-red-500">{passwordError}</p>}
           </div>
-          <div className="mt-6">
+
+          <div className="col-span-2 mt-6">
             <button
               type="submit"
               className="w-full bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 focus:outline-none"
@@ -103,12 +105,26 @@ const Login = () => {
               Login
             </button>
           </div>
-          <p className="mt-2">New here? Please <span className="text-white"><Link to="/register">Register Account.</Link></span></p>
         </form>
-        <p>
-          Login with <button onClick={handleGoogle} className="btn-sm rounded-md bg-cyan-400">Google</button>
+
+        <p className="mt-2 text-center">
+          New here? Please{" "}
+          <span className="text-green-700">
+            <Link to="/register">Register Account.</Link>
+          </span>
         </p>
-        <ToastContainer></ToastContainer>
+
+        <p className="text-center mt-2">
+          Login with{" "}
+          <button
+            onClick={handleGoogle}
+            className="btn-sm rounded-md bg-cyan-400"
+          >
+            Google
+          </button>
+        </p>
+
+        <ToastContainer />
       </div>
     </div>
   );

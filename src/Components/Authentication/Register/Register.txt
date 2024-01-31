@@ -14,8 +14,6 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
-    const photoUrl = e.target.PhotoUrl.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const phoneNumber = e.target.phoneNumber.value;
@@ -33,17 +31,6 @@ const Register = () => {
       setPasswordError("");
 
       try {
-        const checkNumber = await axiosPublic.get("/userinfo");
-        console.log(checkNumber.data)
-        const phoneNumberExists = checkNumber.data.some(user => user.phoneNumber === phoneNumber);
-        console.log(phoneNumberExists)
-
-    if (phoneNumberExists) {
-      toast.error("Phone number already in use. Please use a different one.", {
-        position: toast.POSITION.TOP_CENTER,
-        autoClose: 2000,
-      });
-    } else {
         const auth = getAuth();
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -51,7 +38,8 @@ const Register = () => {
           displayName: name,
           photoURL: photoUrl,
         });
-        
+
+        // Send additional user information to /userinfo
         await axiosPublic.post("/userinfo", {
           userEmail: email,
           password: password,
@@ -73,8 +61,7 @@ const Register = () => {
           e.target.reset();
           navigate("/");
         }, 2000);
-      }
-     } catch (error) {
+      } catch (error) {
         console.error(error);
       }
     }

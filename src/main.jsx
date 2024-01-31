@@ -35,6 +35,7 @@ import AdminRoute from "./Components/Dashboard/AdminRoute.jsx";
 import OthersInfo from "./Components/OthersInfo/OthersInfo.jsx";
 import Profile from "./Components/Profile.jsx/Profile.jsx";
 import User from "./Components/Profile.jsx/User.jsx";
+import UserEdit from "./Components/Profile.jsx/UserEdit.jsx";
 
 const router = createBrowserRouter([
   {
@@ -154,7 +155,11 @@ const router = createBrowserRouter([
       {
         path:"user",
         element:<User></User>
-      }
+      },
+      {
+        path:"useredit",
+        element:<UserEdit></UserEdit>
+      },
     ]
   },
 ]);

@@ -5,10 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 const Profile = () => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  // Check if user is available before accessing properties
   if (!user) {
-    // You might want to add a loading state or redirect to login
     return <p>Loading...</p>;
   }
   const handleLogout = () => {

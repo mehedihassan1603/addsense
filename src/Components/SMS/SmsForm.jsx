@@ -110,7 +110,7 @@ const SmsForm = () => {
       const newMessageCount = Math.ceil(inputText.length / 160);
       setMessageCount(newMessageCount);
     } else {
-      const newMessageCount = Math.ceil(inputText.length / 69);
+      const newMessageCount = Math.ceil(inputText.length / 65);
       setMessageCount(newMessageCount);
     }
   };
@@ -169,7 +169,7 @@ const SmsForm = () => {
       </div>
       <div className="mb-4 flex justify-between text-sm text-gray-500">
         <p>
-          Character: {charCount} / {isEnglish(message) ? 160 : 69}
+          Character: {charCount} / {isEnglish(message) ? 160 : 65}
         </p>
         <p>Message: {messageCount}</p>
       </div>
