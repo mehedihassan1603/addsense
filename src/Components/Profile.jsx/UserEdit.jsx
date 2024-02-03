@@ -40,11 +40,9 @@ const UserEdit = () => {
         password: userInfo.password,
         phoneNumber: userInfo.phoneNumber,
       });
-
-      // Show success toast
       toast.success("User information updated successfully!", {
         position: "top-right",
-        autoClose: 3000, // Automatically close the toast after 3000 milliseconds (3 seconds)
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -55,11 +53,8 @@ const UserEdit = () => {
       setTimeout(() => {
         navigate("/profile/user");
       }, 2000);
-
-      // Handle success, e.g., show a success message, redirect, etc.
     } catch (error) {
       console.error("Error updating user info:", error);
-      // Handle error, e.g., show an error message
     }
   };
 
@@ -113,7 +108,7 @@ const UserEdit = () => {
               className="w-full border rounded-md px-3 py-2 focus:outline-none focus:border-blue-500"
             />
           </div>
-          <div className="mt-6">
+          <div className="mt-6 col-span-2">
             <button
               type="submit"
               className="w-full block bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600 focus:outline-none"

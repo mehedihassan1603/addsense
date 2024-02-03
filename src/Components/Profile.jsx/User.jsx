@@ -39,45 +39,47 @@ const User = () => {
 
   return (
     <div className="p-6 bg-white rounded-md shadow-md w-full md:w-8/12 mx-auto mt-10">
-      <h1 className="text-2xl text-center font-semibold mb-4">
+      <h1 className="text-3xl text-center font-semibold mb-4 text-blue-500">
         User Information
       </h1>
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-6">
         <img
-          className="rounded-full h-16 w-16 mr-4"
+          className="rounded-full h-20 w-20 mr-6 border-4 border-blue-500"
           src={user.photoURL}
           alt="User Avatar"
         />
         <div>
-          <p className="text-lg font-semibold">{user.displayName}</p>
+          <p className="text-2xl font-semibold text-blue-800">{user.displayName}</p>
           <p className="text-gray-600">{userInfo.userEmail}</p>
         </div>
       </div>
-      <div className="mb-4">
-        <p className="font-semibold">Balance: {userInfo.count}</p>
-        <p className="font-semibold">Current SMS Rate: {userInfo.rate}</p>
+      <div className="mb-6">
+        <p className="font-semibold text-blue-800">Balance: {userInfo.count}</p>
+        <p className="font-semibold text-blue-800">Current SMS Rate: {userInfo.rate}</p>
       </div>
-      <div className="mb-4">
-        <p className="font-semibold">Phone Number:</p>
-        <p>{userInfo.phoneNumber}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="mb-4">
+          <p className="font-semibold text-blue-800">Phone Number:</p>
+          <p>{userInfo.phoneNumber}</p>
+        </div>
+        <div className="mb-4 flex justify-between items-center">
+          <div>
+            <p className="font-semibold text-blue-800">Password:</p>
+            <p>{userInfo.password}</p>
+          </div>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded">
+            <a href="/profile/useredit">Edit</a>
+          </button>
+        </div>
+        <div className="mb-4">
+          <p className="font-semibold text-blue-800">Gender:</p>
+          <p>{userInfo.gender}</p>
+        </div>
+        <div className="mb-4">
+          <p className="font-semibold text-blue-800">Address:</p>
+          <p>{userInfo.address}</p>
+        </div>
       </div>
-      <div className="mb-4">
-        <p className="font-semibold">Password:</p>
-        <p>{userInfo.password}</p>
-      </div>
-      <div className="mb-4">
-        <p className="font-semibold">Gender:</p>
-        <p>{userInfo.gender}</p>
-      </div>
-      <div className="mb-4">
-        <p className="font-semibold">District:</p>
-        <p>{userInfo.district}</p>
-      </div>
-      <div className="mb-4">
-        <p className="font-semibold">Division:</p>
-        <p>{userInfo.division}</p>
-      </div>
-      <button className="btn btn-primary"><a href="/profile/useredit">Edit</a></button>
     </div>
   );
 };

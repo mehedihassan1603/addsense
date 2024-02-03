@@ -67,7 +67,7 @@ const Navbar = () => {
                 <NavLink to="/">Home</NavLink>
               </li>
               <li>
-                <NavLink to="/dash">Dashboard</NavLink>
+                <NavLink to="/ads">Ads</NavLink>
               </li>
               <li>
                 <NavLink to="/package">Package</NavLink>
@@ -92,7 +92,7 @@ const Navbar = () => {
               <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/ads">Ads</NavLink>
             </li>
             <li>
               <NavLink to="/package">Package</NavLink>
@@ -109,7 +109,7 @@ const Navbar = () => {
           <div className="text-white flex flex-col lg:flex-row items-center">
             {user ? (
               <>
-                <Link to="/profile" className="flex flex-col justify-center items-center">
+                <Link to="/profile/profile" className="flex flex-col justify-center items-center">
                   <span>
                     <img
                       className="w-8 rounded-full"

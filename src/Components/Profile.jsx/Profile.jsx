@@ -31,6 +31,14 @@ const Profile = () => {
           </span>
         </div>
         <ul className="space-y-2">
+        <li>
+            <a
+              href="/profile/profile"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+            >
+              Profile
+            </a>
+          </li>
           <li>
             <a
               href="/profile/user"
@@ -41,10 +49,26 @@ const Profile = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/profile/smsHistory"
               className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
             >
-              Profile
+              SMS History
+            </a>
+          </li>
+          <li>
+            <a
+              href="/profile/myinfo"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+            >
+              Manual Payment History
+            </a>
+          </li>
+          <li>
+            <a
+              href="/"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+            >
+              Front Homepage
             </a>
           </li>
           <li>

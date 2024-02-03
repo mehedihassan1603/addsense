@@ -79,13 +79,23 @@ const SmsForm = () => {
           type: "plain",
           message,
         });
-
+  
         console.log("SMS sending response:", response.data);
-
+  
         if (response.data.response.status === "success") {
           toast.success("SMS sent successfully!");
+          console.log(user.email)
+          await axiosPublic.post("/smsHistory", {
+            userEmail: user.email,
+            recipient,
+            sender_id: takeSenderId,
+            message,
+            timestamp: new Date().toISOString(),
+          });
+  
           const newCount = count - rate;
           updateCount(newCount, foundEmail);
+  
           setTimeout(() => {
             window.location.reload();
           }, 2000);
@@ -100,6 +110,7 @@ const SmsForm = () => {
       toast.error("Error sending SMS. Please try again.");
     }
   };
+  
 
   const handleInputChange = (e) => {
     const inputText = e.target.value;
@@ -116,12 +127,9 @@ const SmsForm = () => {
   };
   const handleChange = (e) => {
     const inputText = e.target.value;
-
-    // Check if the input starts with "88"
     if (inputText.startsWith("88")) {
       setRecipient(inputText);
     } else {
-      // If not, add "88" to the beginning of the input
       setRecipient(`88${inputText}`);
     }
   };
@@ -130,6 +138,7 @@ const SmsForm = () => {
     <div className="max-w-md mx-auto mt-8 p-4 border rounded shadow-md">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold mb-4">SMS Form</h2>
+        {/* <a href="/smsHistory" className="text-lg px-2 rounded-md bg-slate-300 font-bold mb-2 hover:bg-slate-400">SMS History</a> */}
       </div>
       <div className="mb-4">
   <label className="block text-sm font-medium text-gray-600">
@@ -139,7 +148,7 @@ const SmsForm = () => {
     <span className="absolute left-2 top-1/4 text-lg text-black">88</span>
     <input
       type="text"
-      value={recipient.replace(/^88/, '')} // Remove "88" if it appears at the beginning
+      value={recipient.replace(/^88/, '')} 
       onChange={handleChange}
       className="pl-8 mt-1 p-2 border rounded w-full bg-slate-300 text-lg"
     />
@@ -163,14 +172,16 @@ const SmsForm = () => {
         </label>
         <textarea
           value={message}
+          placeholder="Type here first..."
           onChange={handleInputChange}
           className="mt-1 p-2 border rounded w-full bg-slate-300"
         />
       </div>
       <div className="mb-4 flex justify-between text-sm text-gray-500">
-        <p>
-          Character: {charCount} / {isEnglish(message) ? 160 : 65}
-        </p>
+      <p>
+  Character: {charCount} / {isEnglish(message) ? "160 (English)" : "65 (Unicode)"}
+</p>
+
         <p>Message: {messageCount}</p>
       </div>
       <button

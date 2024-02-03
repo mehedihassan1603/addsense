@@ -82,9 +82,9 @@ const ManualHistory = () => {
           autoClose: 100,
         });
 
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 100);
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       } else {
         console.error("Failed to update user count value:", response.data);
       }

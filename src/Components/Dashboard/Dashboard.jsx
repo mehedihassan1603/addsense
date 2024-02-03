@@ -21,13 +21,16 @@ const Dashboard = () => {
                     ADD INFO
                 </Link>
                 <Link to="/appinfo" className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-10 px-10 rounded">
-                    APP INFO
+                    BKASH APP INFO
                 </Link>
                 <Link to="/userinfo" className="bg-red-700 hover:bg-red-800 text-white font-bold py-10 px-10 rounded">
                     Users
                 </Link>
                 <Link to="/othersinfo" className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-10 px-10 rounded">
                     Others Info
+                </Link>
+                <Link to="/smsAllHistory" className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-10 px-10 rounded">
+                    SMS History
                 </Link>
             </div>
         </div>

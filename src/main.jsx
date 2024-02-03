@@ -36,6 +36,9 @@ import OthersInfo from "./Components/OthersInfo/OthersInfo.jsx";
 import Profile from "./Components/Profile.jsx/Profile.jsx";
 import User from "./Components/Profile.jsx/User.jsx";
 import UserEdit from "./Components/Profile.jsx/UserEdit.jsx";
+import SmsHistory from "./Components/SMS/SmsHistory.jsx";
+import SmsAllHistory from "./Components/SMS/SmsAllHistory.jsx";
+import UserHome from "./Components/Profile.jsx/UserHome.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +47,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Ads></Ads>,
+        element: <Home></Home>,
       },
       {
         path: "/login",
@@ -123,12 +126,12 @@ const router = createBrowserRouter([
         element: <PrivateRoute><ManualHistory></ManualHistory></PrivateRoute>,
       },
       {
-        path: "/myinfo",
-        element: <PrivateRoute><MyInfo></MyInfo></PrivateRoute>,
-      },
-      {
         path: "/sms",
         element: <PrivateRoute><SmsForm></SmsForm></PrivateRoute>,
+      },
+      {
+        path: "/smsAllHistory",
+        element: <SmsAllHistory></SmsAllHistory>,
       },
       {
         path: "/userinfo",
@@ -153,12 +156,24 @@ const router = createBrowserRouter([
     element: <Profile></Profile>,
     children: [
       {
+        path:"profile",
+        element:<UserHome></UserHome>
+      },
+      {
         path:"user",
         element:<User></User>
       },
       {
         path:"useredit",
         element:<UserEdit></UserEdit>
+      },
+      {
+        path: "smsHistory",
+        element: <SmsHistory></SmsHistory>,
+      },
+      {
+        path: "myinfo",
+        element: <PrivateRoute><MyInfo></MyInfo></PrivateRoute>,
       },
     ]
   },

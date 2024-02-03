@@ -86,13 +86,13 @@ const Details = () => {
         if (response.status === 200) {
           toast.success("Reward gain successful!", {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
+            autoClose: 1000,
           });
   
           setTimeout(() => {
-            // navigate("/ads");
-            // window.location.reload();
-          }, 2000);
+            navigate("/ads");
+            window.location.reload();
+          }, 1000);
         } else {
           console.error("Error posting data to /userinfo:", response.data);
           setClickCount((prevCount) => prevCount - 1);
