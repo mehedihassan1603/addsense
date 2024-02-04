@@ -12,9 +12,30 @@ const Dashboard = () => {
         <div className="flex flex-col md:flex-row bg-slate-400">
             <div className={`w-full md:w-1/4 p-6 bg-gray-800 text-white ${isMenuOpen ? 'hidden' : ''}`}>
                 <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
-                <Link to="/dashboard/addads" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
-                    Ads
-                </Link>
+                <div className="dropdown dropdown-hover">
+          <div
+            tabIndex={0}
+            role="button"
+            className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+          >
+            ADS
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
+          >
+            <Link to="/dashboard/addads" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                CREATE ADS
+            </Link>
+            <Link
+              to="/dashboard/allAds"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              ALL ADS LIST
+            </Link>
+          </ul>
+        </div>
+                
                 <Link to="/dashboard/addpackage" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
                     Package
                 </Link>

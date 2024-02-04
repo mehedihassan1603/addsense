@@ -73,12 +73,19 @@ const Details = () => {
         const defaultRate = defaultRateResponse.data[0]?.defaultRate;
         console.log("Default Rate:", defaultRate);
         const rateValue = userRate !== 0 ? userRate : defaultRate;
-        console.log("Rate Value",rateValue)
+        console.log("Rate Value",rateValue);
+        const rewardResponse = await axiosPublic.get("/ads");
+        console.log(rewardResponse.data);
+        const findReward = rewardResponse.data.find(item =>item._id === _id);
+        console.log(parseInt(findReward.reward))
+        const reward = parseFloat(findReward.reward);
+        console.log(typeof(reward))
+
   
         setClickCount((prevCount) => prevCount + 1);
   
         const response = await axiosPublic.post("/userinfo", {
-          count: clickCount + 1,
+          count: clickCount + reward,
           userEmail: user.email,
           rate: rateValue,
         });
@@ -86,13 +93,13 @@ const Details = () => {
         if (response.status === 200) {
           toast.success("Reward gain successful!", {
             position: toast.POSITION.TOP_CENTER,
-            autoClose: 1000,
+            autoClose: 800,
           });
   
           setTimeout(() => {
             navigate("/ads");
             window.location.reload();
-          }, 1000);
+          }, 800);
         } else {
           console.error("Error posting data to /userinfo:", response.data);
           setClickCount((prevCount) => prevCount - 1);

@@ -39,6 +39,8 @@ import UserEdit from "./Components/Profile.jsx/UserEdit.jsx";
 import SmsHistory from "./Components/SMS/SmsHistory.jsx";
 import SmsAllHistory from "./Components/SMS/SmsAllHistory.jsx";
 import UserHome from "./Components/Profile.jsx/UserHome.jsx";
+import DashHome from "./Components/Dashboard/DashHome.jsx";
+import AllAds from "./Components/AllAds/AllAds.jsx";
 
 const router = createBrowserRouter([
   {
@@ -141,12 +143,16 @@ const router = createBrowserRouter([
     element: <AdminRoute><Dashboard></Dashboard></AdminRoute>,
     children:[
       {
-        path: "dashboard",
-        element:<Dashboard></Dashboard>
+        path: "",
+        element:<DashHome></DashHome>
       },
       {
         path: "addads",
         element: <AddAds></AddAds>,
+      },
+      {
+        path: "allAds",
+        element: <AllAds></AllAds>,
       },
       {
         path: "addpackage",
