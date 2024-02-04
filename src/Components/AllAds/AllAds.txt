@@ -4,14 +4,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditForm from "./EditForm";
 
-const ITEMS_PER_PAGE = 9;
-
 const AllAds = () => {
     const axiosPublic = useAxiosPublic();
     const [ads, setAds] = useState([]);
     const [selectedAd, setSelectedAd] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,23 +23,30 @@ const AllAds = () => {
     }, [axiosPublic]);
 
     const handleEdit = (adId) => {
+        // Set the selected ad for editing
         const adToEdit = ads.find((ad) => ad._id === adId);
         setSelectedAd(adToEdit);
-        setIsModalOpen(true);
+
+        // Add logic for opening an edit form or modal
+        console.log(`Editing ad with ID ${adId}`);
     };
 
     const handleEditSave = async (editedAd) => {
         try {
+            // Make a PUT request to your server's /ads/:id endpoint
             const response = await axiosPublic.put(`/ads/${editedAd._id}`, editedAd);
 
             if (response.status === 200) {
                 console.log(`Ad with ID ${editedAd._id} updated successfully`);
+                // If update is successful, update the ads state or perform any necessary actions
+                // For example, you can refetch the ads data to update the UI
                 const updatedAds = ads.map((ad) => (ad._id === editedAd._id ? editedAd : ad));
                 setAds(updatedAds);
             } else {
                 console.error(`Failed to update ad with ID ${editedAd._id}`);
             }
-            setIsModalOpen(false);
+
+            // Clear the selectedAd state after saving
             setSelectedAd(null);
         } catch (error) {
             console.error(`Error updating ad with ID ${editedAd._id}:`, error);
@@ -51,7 +54,7 @@ const AllAds = () => {
     };
 
     const handleEditCancel = () => {
-        setIsModalOpen(false);
+        // Clear the selectedAd state without saving changes
         setSelectedAd(null);
     };
 
@@ -74,18 +77,12 @@ const AllAds = () => {
             console.error(`Error deleting ad with ID ${adId}:`, error);
         }
     };
-    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-    const currentAds = ads.slice(indexOfFirstItem, indexOfLastItem);
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
 
     return (
         <div className="container mx-auto my-8">
             <h1 className="text-3xl font-bold mb-6">All Ads</h1>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {currentAds.map((ad) => (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {ads.map((ad) => (
                     <div key={ad._id} className="bg-white p-4 rounded-md shadow-md flex flex-col h-full">
                         <h2 className="text-lg font-semibold mb-2">{ad.name}</h2>
                         <div className="flex-grow mb-6">
@@ -110,33 +107,14 @@ const AllAds = () => {
                     </div>
                 ))}
             </div>
-            <div className="mt-4 flex justify-center">
-                <ul className="flex space-x-2">
-                    {Array.from({ length: Math.ceil(ads.length / ITEMS_PER_PAGE) }, (_, index) => (
-                        <li key={index}>
-                            <button
-                                className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                                onClick={() => paginate(index + 1)}
-                            >
-                                {index + 1}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <ToastContainer></ToastContainer>
-            {isModalOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
-                    <div className="absolute w-full h-full bg-gray-900 opacity-50"></div>
-                    <div className="relative bg-white p-8 rounded-md shadow-md">
-                        <EditForm
-                            ad={selectedAd}
-                            onSave={handleEditSave}
-                            onCancel={handleEditCancel}
-                        />
-                    </div>
-                </div>
+            {selectedAd && (
+                <EditForm
+                    ad={selectedAd}
+                    onSave={handleEditSave}
+                    onCancel={handleEditCancel}
+                />
             )}
+            <ToastContainer></ToastContainer>
         </div>
     );
 };
