@@ -113,7 +113,7 @@ const Register = () => {
 
           setTimeout(() => {
             e.target.reset();
-            navigate("/");
+            navigate("/profile/profile");
           }, 2000);
         }
         
