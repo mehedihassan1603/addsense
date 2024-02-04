@@ -29,7 +29,7 @@ const Login = () => {
 
         setTimeout(() => {
           e.target.reset();
-          navigate('/');
+          navigate('/profile/profile');
         }, 2000);
       })
       .catch(error => {
@@ -53,7 +53,7 @@ const Login = () => {
         });
 
         setTimeout(() => {
-          navigate('/');
+          navigate('/profile/profile');
         }, 2000);
       })
       .catch(error => {

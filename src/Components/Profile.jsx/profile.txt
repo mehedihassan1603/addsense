@@ -1,0 +1,141 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+const Profile = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [isNavVisible, setNavVisibility] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!isMenuOpen);
+    };
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        console.log("Successfully logged out");
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const toggleNavVisibility = () => {
+    setNavVisibility(!isNavVisible);
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100">
+      {/* Toggle Button for Small Screens */}
+      <button
+        onClick={toggleNavVisibility}
+        className="lg:hidden fixed top-4 right-4 px-4 py-2 text-gray-600 focus:outline-none z-10"
+      >
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          ></path>
+        </svg>
+      </button>
+
+      {/* Navigation for Small Screens */}
+      <div
+        className={`${
+          isNavVisible ? "lg:hidden fixed w-full h-full overflow-y-auto" : "hidden"
+        } bg-gray-800 top-0 left-0 p-6 transition-all z-20`}
+      >
+        <div className="flex items-center mb-8">
+          <img
+            className="rounded-full h-12 w-12 mr-2"
+            src={user.photoURL}
+            alt="User Avatar"
+          />
+          <span className="text-white font-semibold text-lg">
+            {user.displayName}
+          </span>
+        </div>
+        <ul className="space-y-2">
+          {/* Add links for small screens */}
+          <li>
+            <Link
+              to="/profile/profile"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+              onClick={toggleNavVisibility}
+            >
+              Profile
+            </Link>
+          </li>
+          {/* Add other links for small screens */}
+          <li>
+            <Link
+              to="/profile/user"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+              onClick={toggleNavVisibility}
+            >
+              User
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/profile/smsHistory"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+              onClick={toggleNavVisibility}
+            >
+              SMS History
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/profile/myinfo"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+              onClick={toggleNavVisibility}
+            >
+              Manual Payment History
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/"
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+              onClick={toggleNavVisibility}
+            >
+              Front Homepage
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => {
+                handleLogout();
+                toggleNavVisibility();
+              }}
+              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300 block"
+            >
+              Logout
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Content Area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

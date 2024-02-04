@@ -1,25 +1,41 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isNavVisible, setNavVisibility] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+  };
+
   if (!user) {
     return <p>Loading...</p>;
   }
+
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("Successfull");
+        console.log("Successfully logged out");
         navigate("/");
       })
       .catch((error) => console.log(error));
   };
 
+  const toggleNavVisibility = () => {
+    setNavVisibility(!isNavVisible);
+  };
+
   return (
-    <div className="flex h-screen bg-gray-100">
-      <nav className="bg-gray-800 w-64 min-h-screen p-6">
+    <div className="flex flex-col md:flex-row bg-slate-400">
+      <div
+        className={`w-full md:w-1/4 p-6 bg-gray-800 text-white ${
+          isMenuOpen ? "hidden" : ""
+        }`}
+      >
         <div className="flex items-center mb-8">
           <img
             className="rounded-full h-12 w-12 mr-2"
@@ -30,59 +46,122 @@ const Profile = () => {
             {user.displayName}
           </span>
         </div>
-        <ul className="space-y-2">
-        <li>
-            <a
-              href="/profile/profile"
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+        <Link
+          to="/profile/profile"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Dashboard
+        </Link>
+        <Link
+          to="/profile/user"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          User
+        </Link>
+        <div className="dropdown dropdown-hover">
+          <div
+            tabIndex={0}
+            role="button"
+            className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+          >
+            SMS
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
+          >
+            <Link
+              to="/profile/sms"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
-              Profile
-            </a>
-          </li>
-          <li>
-            <a
-              href="/profile/user"
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
-            >
-              User
-            </a>
-          </li>
-          <li>
-            <a
-              href="/profile/smsHistory"
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+              Send SMS
+            </Link>
+            <Link
+              to="/profile/smsHistory"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
               SMS History
-            </a>
-          </li>
-          <li>
-            <a
-              href="/profile/myinfo"
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+            </Link>
+          </ul>
+        </div>
+        <br />
+        <div className="dropdown dropdown-hover">
+          <div
+            tabIndex={0}
+            role="button"
+            className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+          >
+            Payment
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
+          >
+            <Link
+              to="/package"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
-              Manual Payment History
-            </a>
-          </li>
-          <li>
-            <a
-              href="/"
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+              Make Payment
+            </Link>
+            <Link
+          to="/profile/myinfo"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Manual Payment History
+        </Link>
+          </ul>
+        </div>
+        
+        <Link to="/" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+          Front Homepage
+        </Link>
+        <Link
+          onClick={() => {
+            handleLogout();
+          }}
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Logout
+        </Link>
+      </div>
+      <div className="flex-1 p-6">
+        <button
+          className="md:hidden absolute top-3 right-3 text-white"
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="h-6 w-6"
             >
-              Front Homepage
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={handleLogout}
-              className="text-white hover:bg-gray-700 px-4 py-2 rounded transition duration-300"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              className="h-6 w-6"
             >
-              Logout
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Outlet />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
+            </svg>
+          )}
+        </button>
+        <Outlet></Outlet>
       </div>
     </div>
   );

@@ -61,30 +61,7 @@ const router = createBrowserRouter([
         path: "/ads",
         element: <PrivateRoute><Ads></Ads></PrivateRoute>,
       },
-      {
-        path: "/addads",
-        element: <PrivateRoute><AddAds></AddAds></PrivateRoute>,
-      },
-      {
-        path: "/dashboard",
-        element: <AdminRoute><Dashboard></Dashboard></AdminRoute>,
-      },
-      {
-        path: "/ADDPACKAGE",
-        element: <PrivateRoute><AddPackage></AddPackage></PrivateRoute>,
-      },
-      {
-        path: "/basic",
-        element: <PrivateRoute><Basic></Basic></PrivateRoute>,
-      },
-      {
-        path: "/standard",
-        element: <PrivateRoute><Standard></Standard></PrivateRoute>,
-      },
-      {
-        path: "/premium",
-        element: <PrivateRoute><Premium></Premium></PrivateRoute>,
-      },
+      
       {
         path: "/details/:_id",
         element: <PrivateRoute><Details></Details></PrivateRoute>,
@@ -92,10 +69,6 @@ const router = createBrowserRouter([
       {
         path: "/package",
         element: <PrivateRoute><AllPackage></AllPackage></PrivateRoute>,
-      },
-      {
-        path: "/history",
-        element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>,
       },
       {
         path: "/manual",
@@ -109,34 +82,12 @@ const router = createBrowserRouter([
         path: "/premiumpay",
         element: <PrivateRoute><PremiumPayment></PremiumPayment></PrivateRoute>,
       },
-      {
-        path: "/addinfo",
-        element: <PrivateRoute><AddInfo></AddInfo></PrivateRoute>,
-      },
-      {
-        path: "/othersinfo",
-        element: <PrivateRoute><OthersInfo></OthersInfo></PrivateRoute>,
-      },
-      {
-        path: "/appinfo",
-        element: <PrivateRoute><AppInfo></AppInfo></PrivateRoute>,
-      },
-      {
-        path: "/number",
-        element: <PrivateRoute><ManualHistory></ManualHistory></PrivateRoute>,
-      },
+      
       {
         path: "/sms",
         element: <PrivateRoute><SmsForm></SmsForm></PrivateRoute>,
       },
-      {
-        path: "/smsAllHistory",
-        element: <SmsAllHistory></SmsAllHistory>,
-      },
-      {
-        path: "/userinfo",
-        element: <PrivateRoute><Users></Users></PrivateRoute>,
-      },
+      
     ],
   },
   {
@@ -173,7 +124,73 @@ const router = createBrowserRouter([
       },
       {
         path: "myinfo",
-        element: <PrivateRoute><MyInfo></MyInfo></PrivateRoute>,
+        element: <MyInfo></MyInfo>,
+      },
+      {
+        path: "sms",
+        element: <SmsForm></SmsForm>
+      },
+      {
+        path: "package",
+        element: <AllPackage></AllPackage>
+      },
+    ]
+  },
+  {
+    path: "/dashboard",
+    element: <AdminRoute><Dashboard></Dashboard></AdminRoute>,
+    children:[
+      {
+        path: "dashboard",
+        element:<Dashboard></Dashboard>
+      },
+      {
+        path: "addads",
+        element: <AddAds></AddAds>,
+      },
+      {
+        path: "addpackage",
+        element:<AddPackage></AddPackage>,
+      },
+      {
+        path: "basic",
+        element:<Basic></Basic>,
+      },
+      {
+        path: "standard",
+        element:<Standard></Standard>,
+      },
+      {
+        path: "premium",
+        element:<Premium></Premium>,
+      },
+      {
+        path: "history",
+        element: <PaymentHistory></PaymentHistory>,
+      },
+      {
+        path: "addinfo",
+        element: <AddInfo></AddInfo>,
+      },
+      {
+        path: "othersinfo",
+        element: <OthersInfo></OthersInfo>,
+      },
+      {
+        path: "appinfo",
+        element: <AppInfo></AppInfo>,
+      },
+      {
+        path: "number",
+        element: <ManualHistory></ManualHistory>,
+      },
+      {
+        path: "smsAllHistory",
+        element: <SmsAllHistory></SmsAllHistory>,
+      },
+      {
+        path: "userinfo",
+        element: <Users></Users>,
       },
     ]
   },

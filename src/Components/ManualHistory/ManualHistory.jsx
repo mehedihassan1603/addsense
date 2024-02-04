@@ -9,6 +9,8 @@ const ManualHistory = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const [paymentHistory, setPaymentHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,31 +52,31 @@ const ManualHistory = () => {
   const updateCount = async (amount, userEmail) => {
     try {
       const getCurrentCount = await axiosPublic.get("/userinfo");
-    console.log(getCurrentCount);
+      console.log(getCurrentCount);
 
-    const foundEmail = getCurrentCount.data.find(
-      (item) => item.userEmail === userEmail
-    );
-    console.log(foundEmail);
+      const foundEmail = getCurrentCount.data.find(
+        (item) => item.userEmail === userEmail
+      );
+      console.log(foundEmail);
 
-    const userRate = foundEmail ? Number(foundEmail.rate) : 0;
-    console.log("UserRate:", userRate);
+      const userRate = foundEmail ? Number(foundEmail.rate) : 0;
+      console.log("UserRate:", userRate);
 
-    const defaultRateResponse = await axiosPublic.get("/addinfo");
-    const defaultRate = defaultRateResponse.data[0]?.defaultRate;
-    console.log("Default Rate:", defaultRate);
+      const defaultRateResponse = await axiosPublic.get("/addinfo");
+      const defaultRate = defaultRateResponse.data[0]?.defaultRate;
+      console.log("Default Rate:", defaultRate);
 
-    const rateValue = userRate !== 0 ? userRate : 0.25; 
-    console.log(rateValue);
+      const rateValue = userRate !== 0 ? userRate : 0.25;
+      console.log(rateValue);
 
-    const currentCount = foundEmail ? foundEmail.count : 0;
-    const newCount = Number(currentCount) + Number(amount);
+      const currentCount = foundEmail ? foundEmail.count : 0;
+      const newCount = Number(currentCount) + Number(amount);
 
-    const response = await axiosPublic.post("/userinfo", {
-      userEmail: userEmail,
-      count: newCount,
-      rate: rateValue,
-    });
+      const response = await axiosPublic.post("/userinfo", {
+        userEmail: userEmail,
+        count: newCount,
+        rate: rateValue,
+      });
 
       if (response.status === 200) {
         toast.success("Successfully added to balance", {
@@ -117,80 +119,108 @@ const ManualHistory = () => {
       });
     }
   };
+  const totalPages = Math.ceil(paymentHistory.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentPayments = paymentHistory.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 overflow-x-auto">
       <h1 className="text-2xl font-bold mb-4">Payment History</h1>
-      <table className="min-w-full border border-gray-300">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">User Email</th>
-            <th className="border border-gray-300 px-4 py-2">Number</th>
-            <th className="border border-gray-300 px-4 py-2">Transaction ID</th>
-            <th className="border border-gray-300 px-4 py-2">Amount</th>
-            <th className="border border-gray-300 px-4 py-2">
-              Payment Execute Time
-            </th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paymentHistory.map((payment, index) => (
-            <tr key={index}>
-              <td className="border border-gray-300 px-4 py-2">
-                {payment.userEmail}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {payment.number}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {payment.transactionId}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {payment.amount}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {moment().format("MMMM Do YYYY, h:mm:ss a")}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                {payment.status === "pending" && (
-                  <>
-                    <button
-                      onClick={() =>
-                        handleAccept(
-                          payment._id,
-                          payment.amount,
-                          payment.userEmail
-                        )
-                      }
-                      className="bg-green-500 text-white px-2 py-1 rounded"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleReject(payment._id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded"
-                    >
-                      Reject
-                    </button>
-                  </>
-                )}
-                {payment.status === "accepted" && (
-                  <div className="">
-                    <h1>Accepted</h1>
-                  </div>
-                )}
-                {payment.status === "rejected" && (
-                  <div className="">
-                    <h1>Rejected</h1>
-                  </div>
-                )}
-              </td>
+      <div className="w-full overflow-scroll">
+        <table className="min-w-full border border-gray-300">
+          <thead>
+            <tr>
+              <th className="border border-gray-300 px-4 py-2">User Email</th>
+              <th className="border border-gray-300 px-4 py-2">Number</th>
+              <th className="border border-gray-300 px-4 py-2">
+                Transaction ID
+              </th>
+              <th className="border border-gray-300 px-4 py-2">Amount</th>
+              <th className="border border-gray-300 px-4 py-2">
+                Payment Execute Time
+              </th>
+              <th className="border border-gray-300 px-4 py-2">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <ToastContainer></ToastContainer>
+          </thead>
+          <tbody>
+            {currentPayments.map((payment, index) => (
+              <tr key={index}>
+                <td className="border border-gray-300 px-4 py-2">
+                  {payment.userEmail}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {payment.number}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {payment.transactionId}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {payment.amount}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {moment().format("MMMM Do YYYY, h:mm:ss a")}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {payment.status === "pending" && (
+                    <>
+                      <button
+                        onClick={() =>
+                          handleAccept(
+                            payment._id,
+                            payment.amount,
+                            payment.userEmail
+                          )
+                        }
+                        className="bg-green-500 text-white px-2 py-1 rounded"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleReject(payment._id)}
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
+                  {payment.status === "accepted" && (
+                    <div className="">
+                      <h1>Accepted</h1>
+                    </div>
+                  )}
+                  {payment.status === "rejected" && (
+                    <div className="">
+                      <h1>Rejected</h1>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mx-1 px-3 py-2 border rounded ${
+              currentPage === index + 1
+                ? "bg-gray-600 text-white"
+                : "bg-gray-300"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+      <ToastContainer />
     </div>
   );
 };

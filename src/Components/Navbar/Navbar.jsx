@@ -8,6 +8,7 @@ const Navbar = () => {
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const [clickCount, setClickCount] = useState(0);
+  const [title, setTitle] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,6 +17,10 @@ const Navbar = () => {
           const foundEmail = updatedCount.data.find(
             (item) => item.userEmail === user.email
           );
+          const title = await axiosPublic.get("/othersinfo");
+          const take = title.data.find(item => item.title);
+          console.log(take.title)
+          setTitle(take.title)
           setClickCount(foundEmail?.count || 0);
         } else {
           setClickCount(0);
@@ -70,8 +75,11 @@ const Navbar = () => {
                 <NavLink to="/ads">Ads</NavLink>
               </li>
               <li>
-                <NavLink to="/package">Package</NavLink>
+                <NavLink to="/package">Payment</NavLink>
               </li>
+              <li>
+              <NavLink to="/sms">SMS</NavLink>
+            </li>
             </ul>
           </div>
 
@@ -83,7 +91,7 @@ const Navbar = () => {
             />
           </a>
           <NavLink to="/" className="normal-case text-xl font-semibold">
-            Addsense
+            {title}
           </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
@@ -95,16 +103,16 @@ const Navbar = () => {
               <NavLink to="/ads">Ads</NavLink>
             </li>
             <li>
-              <NavLink to="/package">Package</NavLink>
+              <NavLink to="/package">Payment</NavLink>
             </li>
             <li>
               <NavLink to="/sms">SMS</NavLink>
             </li>
           </ul>
         </div>
-        <div className="navbar-end flex gap-10">
+        <div className="navbar-end flex gap-6 md:gap-10">
           <div>
-            <h1>Reward: {clickCount}</h1>
+            <h1 className="text-xs md:text-base">Balance: {clickCount}</h1>
           </div>
           <div className="text-white flex flex-col lg:flex-row items-center">
             {user ? (
@@ -117,9 +125,9 @@ const Navbar = () => {
                       alt=""
                     />
                   </span>
-                  <span className="text-xs">{user.displayName}</span>
+                  <span className="text-xs bg-green-600 p-2 rounded-md">{user.displayName}</span>
                 </Link>
-                <button className="text-sm bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-2 px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                <button className="text-sm bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-0 md:py-2 px-1 md:px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
                   <a onClick={handleLogout}>Logout</a>
                 </button>
               </>

@@ -1,37 +1,61 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
+    const [isMenuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen(!isMenuOpen);
+    };
+
     return (
-        <div className="text-center bg-slate-400">
-            <div className="grid grid-cols-3 gap-10 w-full md:w-4/6 mx-auto  px-6 py-6">
-                <Link to="/addads" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-10 px-10 rounded">
-                    Create Ads
+        <div className="flex flex-col md:flex-row bg-slate-400">
+            <div className={`w-full md:w-1/4 p-6 bg-gray-800 text-white ${isMenuOpen ? 'hidden' : ''}`}>
+                <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+                <Link to="/dashboard/addads" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                    Ads
                 </Link>
-                <Link to="/addpackage" className="bg-green-500 hover:bg-green-700 text-white font-bold py-10 px-10 rounded">
-                    Create Package
+                <Link to="/dashboard/addpackage" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                    Package
                 </Link>
-                <Link to="/history" className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-10 px-10 rounded">
-                    Payment History
+                <Link to="/dashboard/history" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                    Auto Payment History
                 </Link>
-                <Link to="/number" className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-10 px-10 rounded">
-                    Manual History
+                <Link to="/dashboard/number" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                    Manual Payment History
                 </Link>
-                <Link to="/addinfo" className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-10 px-10 rounded">
+                <Link to="/dashboard/addinfo" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
                     ADD INFO
                 </Link>
-                <Link to="/appinfo" className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-10 px-10 rounded">
+                <Link to="/dashboard/appinfo" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
                     BKASH APP INFO
                 </Link>
-                <Link to="/userinfo" className="bg-red-700 hover:bg-red-800 text-white font-bold py-10 px-10 rounded">
-                    Users
+                <Link to="/dashboard/userinfo" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
+                    USERS
                 </Link>
-                <Link to="/othersinfo" className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-10 px-10 rounded">
+                <Link to="/dashboard/othersinfo" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
                     Others Info
                 </Link>
-                <Link to="/smsAllHistory" className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-10 px-10 rounded">
+                <Link to="/dashboard/smsAllHistory" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
                     SMS History
                 </Link>
+            </div>
+            <div className="flex-1 p-6">
+                <button
+                    className="md:hidden absolute top-3 right-3 text-white"
+                    onClick={toggleMenu}
+                >
+                    {isMenuOpen ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    )}
+                </button>
+                <Outlet></Outlet>
             </div>
         </div>
     );

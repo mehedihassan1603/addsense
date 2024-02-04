@@ -28,7 +28,7 @@ const MyInfo = () => {
   );
 
   return (
-    <div className="container mx-auto p-4 h-screen">
+    <div className="w-full mx-auto p-4 h-screen">
       <h1 className="text-2xl text-center font-bold mb-4">Payment History</h1>
       {loading ? (
         <span className="loading loading-spinner text-neutral"></span>
@@ -40,7 +40,7 @@ const MyInfo = () => {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full md:w-10/12 mx-auto border border-gray-300">
+              <table className="w-full bg-white mx-auto border border-gray-300">
               <thead>
                 <tr>
                   <th className="border border-gray-300 px-4 py-2">Number</th>
