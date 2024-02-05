@@ -71,6 +71,12 @@ const Profile = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
           >
             <Link
+              to="/profile/smstemplate"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              SMS Template
+            </Link>
+            <Link
               to="/profile/sms"
               className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
