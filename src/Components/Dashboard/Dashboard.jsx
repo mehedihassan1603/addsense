@@ -62,10 +62,22 @@ const Dashboard = () => {
               Create Payment
             </Link>
             <Link
+              to="/dashboard/appinfo"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              App Payment Info
+            </Link>
+            <Link
               to="/dashboard/history"
               className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
-              Auto Payment History
+              App Payment History
+            </Link>
+            <Link
+              to="/dashboard/addinfo"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              Manual Payment Info
             </Link>
             <Link
               to="/dashboard/number"
@@ -77,28 +89,34 @@ const Dashboard = () => {
         </div>
 
         <Link
-          to="/dashboard/addinfo"
-          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-        >
-          ADD INFO
-        </Link>
-        <Link
-          to="/dashboard/appinfo"
-          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-        >
-          BKASH APP INFO
-        </Link>
-        <Link
           to="/dashboard/userinfo"
           className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
         >
-          USERS
+          All Users
         </Link>
         <Link
           to="/dashboard/othersinfo"
           className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
         >
-          Others Info
+          All Info
+        </Link>
+        <div className="dropdown dropdown-hover">
+          <div
+            tabIndex={0}
+            role="button"
+            className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+          >
+            SMS
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
+          >
+            <Link
+          to="/dashboard/smsinfo"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          SMS Information
         </Link>
         <Link
           to="/dashboard/smsAllHistory"
@@ -106,6 +124,9 @@ const Dashboard = () => {
         >
           SMS History
         </Link>
+          </ul>
+        </div>
+        
       </div>
       <div className="flex-1 p-6">
         <button
@@ -144,7 +165,9 @@ const Dashboard = () => {
             </svg>
           )}
         </button>
-        <Outlet></Outlet>
+       <div className="min-h-screen">
+       <Outlet></Outlet>
+       </div>
       </div>
     </div>
   );

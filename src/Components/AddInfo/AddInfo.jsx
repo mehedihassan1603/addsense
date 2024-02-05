@@ -11,8 +11,6 @@ const AddInfo = () => {
   const [product, setProduct] = useState({
     text: "",
     number: "",
-    defaultRate: "",
-    senderId: "",
   });
 
   useEffect(() => {
@@ -33,8 +31,6 @@ const AddInfo = () => {
     axiosPublic.post('/addinfo', {
       text: product.text,
       number: product.number,
-      defaultRate: product.defaultRate,
-      senderId: product.senderId,
     })
     .then(res => {
       if (res.data.insertedId) {
@@ -66,12 +62,12 @@ const AddInfo = () => {
   return (
     <div className="bg-gray-200 w-full md:w-9/12 mt-10 mx-auto p-6 rounded-lg">
       <h1 className="text-2xl font-bold bg-slate-800 py-2 rounded-lg text-center text-white mb-4">
-        Add Information
+        Manual Payment Information
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="text" className="block text-gray-600">
-            Info text:
+            Information text:
           </label>
           <input
             type="text"
@@ -97,41 +93,14 @@ const AddInfo = () => {
             className="w-full border p-2 rounded-md"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="defaultRate" className="block text-gray-600">
-            Default Rate:
-          </label>
-          <input
-            type="number"
-            id="defaultRate"
-            name="defaultRate"
-            required
-            onChange={handleChange}
-            value={product.defaultRate}
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="senderId" className="block text-gray-600">
-            Sender Id
-          </label>
-          <input 
-          type="text"
-          id="senderId"
-          name="senderId"
-          required
-          onChange={handleChange}
-          value={product.senderId}
-          className="w-full border p-2 rounded-md"
-          />
-        </div>
+        
 
         <div className="flex justify-center items-center">
           <button
             type="submit"
             className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
           >
-            ADD
+           Update
           </button>
         </div>
       </form>

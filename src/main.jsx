@@ -42,6 +42,7 @@ import UserHome from "./Components/Profile.jsx/UserHome.jsx";
 import DashHome from "./Components/Dashboard/DashHome.jsx";
 import AllAds from "./Components/AllAds/AllAds.jsx";
 import EditForm from "./Components/AllAds/EditForm.jsx";
+import Sms from "./Components/SMS/Sms.jsx";
 
 const router = createBrowserRouter([
   {
@@ -194,6 +195,10 @@ const router = createBrowserRouter([
       {
         path: "smsAllHistory",
         element: <SmsAllHistory></SmsAllHistory>,
+      },
+      {
+        path: "smsinfo",
+        element: <Sms></Sms>,
       },
       {
         path: "userinfo",
