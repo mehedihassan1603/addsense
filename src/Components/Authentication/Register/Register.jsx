@@ -56,7 +56,6 @@ const Register = () => {
           );
         } else {
           if (selectedImage) {
-            // Upload the image to the server
             const formData = new FormData();
             formData.append('image', selectedImage);
         
@@ -69,13 +68,7 @@ const Register = () => {
         
               const imageUrl = imageUploadResponse.data.imageUrl;
         
-              // Use imageUrl in your registration or save it to the user profile
-              // ...
-        
               console.log('Image uploaded successfully:', imageUrl);
-        
-              // Now you can use `imageUrl` to display the image on your frontend
-              // For example, update the state with the imageUrl
               setUploadedImageUrl(imageUrl);
             } catch (error) {
               console.error('Error uploading image:', error);
