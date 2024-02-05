@@ -16,10 +16,14 @@ const SmsHistory = () => {
         const filteredSmsHistory = response.data.filter(
           (item) => item.userEmail === user.email
         );
-
-        setSmsHistory(filteredSmsHistory);
+        const sortedUsers = filteredSmsHistory.sort((a, b) => {
+          // Assuming the default MongoDB _id field
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setSmsHistory(sortedUsers);
         // Initialize expanded state for each message
-        setExpandedMessages(filteredSmsHistory.map(() => false));
+        setExpandedMessages(sortedUsers.map(() => false));
       } catch (error) {
         console.error("Error fetching SMS history:", error);
       }

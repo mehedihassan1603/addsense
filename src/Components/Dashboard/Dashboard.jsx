@@ -32,13 +32,13 @@ const Dashboard = () => {
               to="/dashboard/addads"
               className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
-              CREATE ADS
+              Create ADS
             </Link>
             <Link
               to="/dashboard/allAds"
               className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
             >
-              ALL ADS LIST
+              All ADS List
             </Link>
           </ul>
         </div>
@@ -126,7 +126,12 @@ const Dashboard = () => {
         </Link>
           </ul>
         </div>
-        
+        <Link
+          to="/"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Front Home
+        </Link>
       </div>
       <div className="flex-1 p-6">
         <button

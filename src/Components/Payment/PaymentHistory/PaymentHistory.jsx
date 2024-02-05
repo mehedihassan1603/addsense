@@ -12,7 +12,11 @@ const PaymentHistory = () => {
     const fetchData = async () => {
       try {
         const response = await axiosPublic.get("/bkash");
-        setPaymentHistory(response.data);
+        const sortedUsers = response.data.sort((a, b) => {
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setPaymentHistory(sortedUsers);
       } catch (error) {
         console.error("Error fetching payment history data:", error);
       }
@@ -28,10 +32,10 @@ const PaymentHistory = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Payment History</h1>
+    <div className="w-full mx-auto p-2">
+      <h1 className="text-2xl font-bold mb-4">App Payment History</h1>
       <div className="w-full overflow-scroll">
-      <table className="min-w-full border border-gray-300">
+      <table className="w-full bg-white border border-gray-700">
         <thead>
           <tr>
             <th className="border border-gray-300 px-4 py-2">Payment ID</th>

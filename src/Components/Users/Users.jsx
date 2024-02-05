@@ -15,14 +15,22 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         const response = await axiosPublic.get("/userinfo");
-        setUsers(response.data);
+        const sortedUsers = response.data.sort((a, b) => {
+          // Assuming the default MongoDB _id field
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching user information:", error);
+        toast.error("Error fetching user information. Please try again.");
       }
     };
-
+  
     fetchUsers();
   }, [axiosPublic]);
+  
+  
 
   const handleEditClick = (_id, rate) => {
     setEditingUserId(_id);
@@ -50,7 +58,6 @@ const Users = () => {
     }
   };
 
-  // Pagination logic
   const totalPages = Math.ceil(users.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -61,7 +68,7 @@ const Users = () => {
   };
 
   return (
-    <div className="w-full mx-auto mt-8 p-4 border rounded shadow-md">
+    <div className="w-full mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">User Information</h2>
       <div className="w-full overflow-scroll">
       <table className="min-w-full bg-white border rounded overflow-hidden">

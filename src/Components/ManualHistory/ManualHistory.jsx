@@ -16,7 +16,11 @@ const ManualHistory = () => {
     const fetchData = async () => {
       try {
         const response = await axiosPublic.get("/number");
-        setPaymentHistory(response.data);
+        const sortedUsers = response.data.sort((a, b) => {
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setPaymentHistory(sortedUsers);
       } catch (error) {
         console.error("Error fetching payment history data:", error);
       }
@@ -62,7 +66,7 @@ const ManualHistory = () => {
       const userRate = foundEmail ? Number(foundEmail.rate) : 0;
       console.log("UserRate:", userRate);
 
-      const defaultRateResponse = await axiosPublic.get("/addinfo");
+      const defaultRateResponse = await axiosPublic.get("/smsinfo");
       const defaultRate = defaultRateResponse.data[0]?.defaultRate;
       console.log("Default Rate:", defaultRate);
 
@@ -131,9 +135,9 @@ const ManualHistory = () => {
 
   return (
     <div className="container mx-auto p-4 overflow-x-auto">
-      <h1 className="text-2xl font-bold mb-4">Payment History</h1>
+      <h1 className="text-2xl font-bold mb-4">Manual Payment History</h1>
       <div className="w-full overflow-scroll">
-        <table className="min-w-full border border-gray-300">
+        <table className="w-full bg-white border border-gray-700">
           <thead>
             <tr>
               <th className="border border-gray-300 px-4 py-2">User Email</th>
@@ -164,8 +168,8 @@ const ManualHistory = () => {
                   {payment.amount}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {moment().format("MMMM Do YYYY, h:mm:ss a")}
-                </td>
+                {payment.time}
+              </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {payment.status === "pending" && (
                     <>

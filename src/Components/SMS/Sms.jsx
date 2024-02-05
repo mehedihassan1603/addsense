@@ -48,7 +48,7 @@ console.log(product)
       }
     })
     .catch(error => {
-      console.error("Error posting data to /addinfo:", error);
+      console.error("Error posting data", error);
     });
   };
   

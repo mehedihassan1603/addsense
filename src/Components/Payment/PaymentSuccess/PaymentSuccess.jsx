@@ -22,7 +22,7 @@ const PaymentSuccess = () => {
         const userRate = foundEmail ? Number(foundEmail.rate) : 0;
         console.log("UserRate:", userRate);
 
-        const defaultRateResponse = await axiosPublic.get("/addinfo");
+        const defaultRateResponse = await axiosPublic.get("/smsinfo");
         const defaultRate = defaultRateResponse.data[0]?.defaultRate;
         console.log("Default Rate:", defaultRate);
 

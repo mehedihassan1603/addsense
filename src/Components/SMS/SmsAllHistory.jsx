@@ -13,9 +13,12 @@ const SmsAllHistory = () => {
     const fetchSmsHistory = async () => {
       try {
         const response = await axiosPublic.get("/smsHistory");
-        setSmsHistory(response.data);
-        // Initialize expanded state for each message
-        setExpandedMessages(response.data.map(() => false));
+        const sortedUsers = response.data.sort((a, b) => {
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setSmsHistory(sortedUsers);
+        setExpandedMessages(sortedUsers.map(() => false));
       } catch (error) {
         console.error("Error fetching SMS history:", error);
       }

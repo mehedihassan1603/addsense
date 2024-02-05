@@ -13,7 +13,11 @@ const Ads = () => {
     const fetchData = async () => {
       try {
         const response = await axiosPublic.get("/ads");
-        setAdsData(response.data);
+        const sortedUsers = response.data.sort((a, b) => {
+          return b._id.localeCompare(a._id);
+        });
+        console.log(sortedUsers)
+        setAdsData(sortedUsers);
       } catch (error) {
         console.error("Error fetching ads data:", error);
       }

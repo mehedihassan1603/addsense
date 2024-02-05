@@ -32,7 +32,7 @@ const SmsForm = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axiosPublic.get("/addinfo");
+        const response = await axiosPublic.get("/smsinfo");
         console.log(response.data);
         const data = response.data.find((item) => item.senderId);
         console.log(data.senderId);

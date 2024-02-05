@@ -69,7 +69,7 @@ const Details = () => {
         const rateResponse = await axiosPublic.get("/userinfo");
         const userRate = rateResponse.data.find(item => item.userEmail === user.email)?.rate;
         console.log("User Rate:", userRate);
-        const defaultRateResponse = await axiosPublic.get("/addinfo");
+        const defaultRateResponse = await axiosPublic.get("/smsinfo");
         const defaultRate = defaultRateResponse.data[0]?.defaultRate;
         console.log("Default Rate:", defaultRate);
         const rateValue = userRate !== 0 ? userRate : defaultRate;
