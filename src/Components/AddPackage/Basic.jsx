@@ -1,34 +1,55 @@
 import { useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Basic = () => {
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
+  const [packagee, setPackagee] = useState({});
   const [product, setProduct] = useState({
     name: "Basic",
-    amount: "",
     price: "",
     details: "",
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axiosPublic.get("/package");
+            const responsePackage = response.data.find(item => item.name === "Basic");
+            setPackagee(responsePackage);
+        } catch (error) {
+            console.error("Error fetching package:", error);
+        }
+    };
+
+    fetchData();
+  }, [axiosPublic]);
+
+  useEffect(() => {
+    setProduct({
+      ...product,
+      price: packagee.price,
+      details: packagee.details,
+    });
+  }, [packagee]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(product);
 
-    axiosPublic.post("/package", product).then((res) => {
-      if (res.data.insertedId) {
+    axiosPublic.put(`/package/${packagee._id}`, product).then((res) => {
+      console.log(res.data)
+      if (res.data.modifiedCount > 0) {
         console.log(res.data);
-        toast.success("Package plans successfully create!", {
+        toast.success("Package plans successfully updated!", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 2000,
         });
 
         setTimeout(() => {
-          e.target.reset();
-          navigate("/");
+          navigate("/dashboard");
         }, 2000);
       }
     });
@@ -38,11 +59,15 @@ const Basic = () => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
   };
+  if (Object.keys(packagee).length === 0) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div className="bg-gray-200 w-9/12 mt-10 mx-auto p-6 rounded-lg">
       <h1 className="text-2xl font-bold bg-slate-800 py-2 rounded-lg text-center text-white mb-4">
-        Set Basic Package plan
+        Update Basic Package
       </h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -55,21 +80,8 @@ const Basic = () => {
             name="name"
             required
             onChange={handleChange}
-            value="Basic" 
+            value={product.name}
             readOnly
-            className="w-full border p-2 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="amount" className="block text-gray-600">
-            Reward Amount:
-          </label>
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            required
-            onChange={handleChange}
             className="w-full border p-2 rounded-md"
           />
         </div>
@@ -81,6 +93,7 @@ const Basic = () => {
             type="number"
             id="price"
             name="price"
+            value={product.price}
             required
             onChange={handleChange}
             className="w-full border p-2 rounded-md"
@@ -90,10 +103,10 @@ const Basic = () => {
           <label htmlFor="details" className="block text-gray-600">
             Details:
           </label>
-          <input
-            type="textarea"
+          <textarea
             id="details"
             name="details"
+            value={product.details}
             required
             onChange={handleChange}
             className="w-full border p-2 rounded-md"
@@ -104,7 +117,7 @@ const Basic = () => {
             type="submit"
             className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
           >
-            Create
+            Update
           </button>
         </div>
       </form>

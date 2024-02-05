@@ -44,7 +44,7 @@ const SmsAllHistory = () => {
   };
 
   return (
-    <div className="w-full md:w-10/12 mx-auto mt-8 p-4 border rounded shadow-md">
+    <div className="w-full mx-auto mt-8 p-4 border rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4">SMS History</h2>
 
       {currentSmsHistory.length === 0 ? (

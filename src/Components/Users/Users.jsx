@@ -61,7 +61,7 @@ const Users = () => {
   };
 
   return (
-    <div className="w-full md:w-9/12 mx-auto mt-8 p-4 border rounded shadow-md">
+    <div className="w-full mx-auto mt-8 p-4 border rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4">User Information</h2>
       <div className="w-full overflow-scroll">
       <table className="min-w-full bg-white border rounded overflow-hidden">
