@@ -17,12 +17,12 @@ const SmsHistory = () => {
           (item) => item.userEmail === user.email
         );
         const sortedUsers = filteredSmsHistory.sort((a, b) => {
-          // Assuming the default MongoDB _id field
+          
           return b._id.localeCompare(a._id);
         });
         console.log(sortedUsers)
         setSmsHistory(sortedUsers);
-        // Initialize expanded state for each message
+        
         setExpandedMessages(sortedUsers.map(() => false));
       } catch (error) {
         console.error("Error fetching SMS history:", error);
@@ -31,8 +31,6 @@ const SmsHistory = () => {
 
     fetchSmsHistory();
   }, [axiosPublic, user]);
-
-  // Function to toggle message expansion
   const toggleMessageExpansion = (index) => {
     setExpandedMessages((prevExpanded) => {
       const newExpanded = [...prevExpanded];

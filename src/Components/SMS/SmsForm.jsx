@@ -13,9 +13,26 @@ const SmsForm = () => {
   const [charCount, setCharCount] = useState(0);
   const [messageCount, setMessageCount] = useState(1);
   const [currentCount, setCurrentCount] = useState(0);
+  const [template, setTemplate] = useState();
   const isEnglish = (text) =>
     /^[a-zA-Z0-9\s\+\-\*\/.,"'`{}(&%@#$!^?><:;]+$/u.test(text);
   const [takeSenderId, setTakeSenderId] = useState(0);
+  const [templates, setTemplates] = useState([]); 
+  const [selectedTemplate, setSelectedTemplate] = useState(""); 
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const response = await axiosPublic.get("/smstemplate");
+        console.log(response);
+        const foundEmail = response.data.filter(item => item.userEmail === user.email);
+        setTemplates(foundEmail);
+      } catch (error) {
+        console.error("Error fetching templates:", error);
+      }
+    };
+    fetchTemplates();
+  }, [axiosPublic]);
 
   const fetchCurrentCount = async () => {
     try {
@@ -37,6 +54,11 @@ const SmsForm = () => {
         const data = response.data.find((item) => item.senderId);
         console.log(data.senderId);
         setTakeSenderId(data.senderId);
+        const templateResponse = await axiosPublic.get("/smstemplate");
+        console.log(templateResponse);
+        const foundTemplate = templateResponse.data.filter(item => item.userEmail === user.email);
+        console.log(foundTemplate);
+        setTemplate(foundTemplate);
       } catch (error) {
         console.error("Error fetching user information:", error);
       }
@@ -96,9 +118,9 @@ const SmsForm = () => {
           const newCount = count - rate;
           updateCount(newCount, foundEmail);
 
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 2000);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
           toast.error("Error sending SMS. Please try again.");
         }
@@ -132,6 +154,32 @@ const SmsForm = () => {
       setRecipient(`88${inputText}`);
     }
   };
+const handleTemplateChange = (e) => {
+  const templateId = e.target.value;
+  const selectedTemplate = templates.find((template) => template._id === templateId);
+  if (selectedTemplate) {
+    setSelectedTemplate(selectedTemplate.message);
+    setMessage(selectedTemplate.text);
+  }
+};
+
+  const renderTemplateDropdown = () => (
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-white">Template:</label>
+      <select
+        value={selectedTemplate}
+        onChange={handleTemplateChange}
+        className="mt-1 p-2 border rounded w-full bg-slate-300"
+      >
+        <option value="">Select a template</option>
+        {templates.map((template) => (
+          <option key={template._id} value={template._id}>
+            {template.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
   return (
     <div className="w-full md:w-8/12 lg:w-2/4 mx-auto my-8 p-4 border bg-gray-500 rounded shadow-md">
@@ -164,6 +212,9 @@ const SmsForm = () => {
           readOnly
           className="mt-1 p-2 border rounded w-full bg-slate-300"
         />
+      </div>
+      <div>
+      {renderTemplateDropdown()}
       </div>
       <div className="mb-4">
         <label className="block text-sm font-medium text-white">

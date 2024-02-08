@@ -44,6 +44,7 @@ import AllAds from "./Components/AllAds/AllAds.jsx";
 import EditForm from "./Components/AllAds/EditForm.jsx";
 import Sms from "./Components/SMS/Sms.jsx";
 import SmsTemplate from "./Components/SMS/SmsTemplate.jsx";
+import AboutUsSection from "./Components/AboutUsSection/AboutUsSection.jsx";
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,10 @@ const router = createBrowserRouter([
         path: "/ads",
         element: <PrivateRoute><Ads></Ads></PrivateRoute>,
       },
-      
+      {
+        path: "/about",
+        element: <AboutUsSection></AboutUsSection>
+      },
       {
         path: "/details/:_id",
         element: <PrivateRoute><Details></Details></PrivateRoute>,

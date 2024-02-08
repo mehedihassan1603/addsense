@@ -57,7 +57,7 @@ const Footer = () => {
           <h3 className="text-xl my-3">About Us:</h3>
           <ul className="list-none p-0">
             <li>
-              <a href="#">Company</a>
+              <a href="/about">Company</a>
             </li>
           </ul>
         </div>

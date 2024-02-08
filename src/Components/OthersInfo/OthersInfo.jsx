@@ -19,50 +19,49 @@ const OthersInfo = () => {
   });
 
   useEffect(() => {
-    axiosPublic.get('/othersinfo')
-      .then(res => {
+    axiosPublic
+      .get("/othersinfo")
+      .then((res) => {
         if (res.data.length > 0) {
           setProduct(res.data[0]);
         }
       })
-      .catch(error => {
-        console.error('Error fetching appinfo:', error);
+      .catch((error) => {
+        console.error("Error fetching appinfo:", error);
       });
   }, [axiosPublic]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    axiosPublic.post('/othersinfo', {
-      title: product.title,
-      facebook: product.facebook,
-      linkdin: product.linkdin,
-      aboutus: product.aboutus,
-      phone: product.phone,
-      email: product.email,
-      whatsapp: product.whatsapp,
-    })
-    .then(res => {
-      if (res.data.insertedId) {
-        console.log('New item added with ID:', res.data.insertedId);
-        toast.success("Info Added successfully!", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-        });
-  
-        setTimeout(() => {
-          e.target.reset();
-          navigate("/");
-        }, 2000);
-      }
-    })
-    .catch(error => {
-      console.error("Error posting data to /addinfo:", error);
-    });
+
+    axiosPublic
+      .post("/othersinfo", {
+        title: product.title,
+        facebook: product.facebook,
+        linkdin: product.linkdin,
+        aboutus: product.aboutus,
+        phone: product.phone,
+        email: product.email,
+        whatsapp: product.whatsapp,
+      })
+      .then((res) => {
+        if (res.data.insertedId) {
+          console.log("New item added with ID:", res.data.insertedId);
+          toast.success("Info Added successfully!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+          });
+
+          setTimeout(() => {
+            e.target.reset();
+            navigate("/dashboard");
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        console.error("Error posting data to /addinfo:", error);
+      });
   };
-  
-  
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,19 +117,19 @@ const OthersInfo = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="text" className="block text-gray-600">
+          <label htmlFor="aboutus" className="block text-gray-600">
             About Us:
           </label>
-          <input
-            type="text"
+          <textarea
             id="aboutus"
             name="aboutus"
             required
-            onChange={handleChange}
             value={product.aboutus}
+            onChange={handleChange}
             className="w-full border p-2 rounded-md"
           />
         </div>
+
         <div className="mb-4">
           <label htmlFor="text" className="block text-gray-600">
             Phone:
@@ -178,7 +177,7 @@ const OthersInfo = () => {
             type="submit"
             className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
           >
-            ADD
+            Update
           </button>
         </div>
       </form>

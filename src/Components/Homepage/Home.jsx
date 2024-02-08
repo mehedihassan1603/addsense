@@ -1,9 +1,11 @@
 import React from 'react';
+import AboutUsSection from '../AboutUsSection/AboutUsSection';
 
 const Home = () => {
   return (
-    <div className="flex justify-center min-h-screen">
-      <div className="w-full text-center rounded-lg bg-white shadow-lg">
+    <div>
+      <div className="flex justify-center mb-10">
+      <div className="w-full text-center rounded-lg bg-white">
         <img
           src="https://placekitten.com/1200/400"
           alt="Banner"
@@ -14,6 +16,10 @@ const Home = () => {
           Explore and discover amazing things.
         </p>
       </div>
+    </div>
+    <div className='mt-10'>
+    <AboutUsSection></AboutUsSection>
+    </div>
     </div>
   );
 };
