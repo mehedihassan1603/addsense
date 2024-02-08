@@ -45,6 +45,8 @@ import EditForm from "./Components/AllAds/EditForm.jsx";
 import Sms from "./Components/SMS/Sms.jsx";
 import SmsTemplate from "./Components/SMS/SmsTemplate.jsx";
 import AboutUsSection from "./Components/AboutUsSection/AboutUsSection.jsx";
+import SmsContactForm from "./Components/SMS/SmsContactForm.jsx";
+import SmsContact from "./Components/SMS/SmsContact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -138,6 +140,14 @@ const router = createBrowserRouter([
       {
         path: "sms",
         element: <SmsForm></SmsForm>
+      },
+      {
+        path: "contact",
+        element: <SmsContactForm></SmsContactForm>
+      },
+      {
+        path: "contactemplate",
+        element: <SmsContact></SmsContact>
       },
       {
         path: "smstemplate",

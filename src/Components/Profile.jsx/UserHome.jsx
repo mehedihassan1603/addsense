@@ -53,7 +53,7 @@ const UserHome = () => {
           >
             <h2 className="text-xl font-semibold mb-2">Balance</h2>
             <p className="text-2xl font-bold  text-purple-600">
-              {balance} credits
+              {balance} Taka
             </p>
           </motion.div>
           <motion.div

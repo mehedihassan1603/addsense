@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
 import useAuth from "../Authentication/Hook/useAuth";
 
-const SmsForm = () => {
+const SmsContactForm = () => {
   const [recipient, setRecipient] = useState("");
   const [senderId, setSenderId] = useState("");
   const [message, setMessage] = useState("");
@@ -17,16 +17,35 @@ const SmsForm = () => {
   const isEnglish = (text) =>
     /^[a-zA-Z0-9\s\+\-\*\/.,"'`{}(&%@#$!^?><:;]+$/u.test(text);
   const [takeSenderId, setTakeSenderId] = useState(0);
-  const [templates, setTemplates] = useState([]); 
-  const [selectedTemplate, setSelectedTemplate] = useState(""); 
+  const [templates, setTemplates] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [numbers, setNumbers] = useState(0);
 
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
         const response = await axiosPublic.get("/smstemplate");
         console.log(response);
-        const foundEmail = response.data.filter(item => item.userEmail === user.email);
+        const foundEmail = response.data.filter(
+          (item) => item.userEmail === user.email
+        );
         setTemplates(foundEmail);
+      } catch (error) {
+        console.error("Error fetching templates:", error);
+      }
+    };
+    fetchTemplates();
+  }, [axiosPublic]);
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const response = await axiosPublic.get("/smscontact");
+        console.log(response);
+        const foundEmail = response.data.filter(
+          (item) => item.userEmail === user.email
+        );
+        setContacts(foundEmail);
       } catch (error) {
         console.error("Error fetching templates:", error);
       }
@@ -56,7 +75,9 @@ const SmsForm = () => {
         setTakeSenderId(data.senderId);
         const templateResponse = await axiosPublic.get("/smstemplate");
         console.log(templateResponse);
-        const foundTemplate = templateResponse.data.filter(item => item.userEmail === user.email);
+        const foundTemplate = templateResponse.data.filter(
+          (item) => item.userEmail === user.email
+        );
         console.log(foundTemplate);
         setTemplate(foundTemplate);
       } catch (error) {
@@ -83,6 +104,24 @@ const SmsForm = () => {
     }
   };
 
+  const handleContactChange = (e) => {
+    const contactId = e.target.value;
+    const selectedContact = contacts.find(
+      (contact) => contact._id === contactId
+    );
+    if (selectedContact) {
+      const numbers = selectedContact.number.split(',').filter((num) => {
+        return /^88\d{11}$/.test(num.trim());
+      });
+      const numberOfNumbers = numbers.length;
+      console.log(`Number of valid numbers: ${numberOfNumbers}`);
+      setRecipient(selectedContact.number);
+      setNumbers(numberOfNumbers)
+    }
+  };
+  console.log(numbers)
+  
+
   const handleSendSMS = async () => {
     try {
       const getCurrentCount = await axiosPublic.get("/userinfo");
@@ -93,10 +132,14 @@ const SmsForm = () => {
       console.log(count);
       console.log(foundEmail);
       const rate = foundEmail.rate * messageCount;
+      const totalNumber = foundEmail.rate * numbers;
+      console.log(totalNumber)
       console.log(rate);
-      if (count >= rate && count !== 0 && rate !== 0) {
-        const recipientList = recipient.split(','); 
-        let errorMessages = ''; 
+      const check = numbers * messageCount;
+      console.log(check)
+      if (count >= rate && count >= totalNumber && count >= check && count !== 0 && rate !== 0) {
+        const recipientList = recipient.split(",");
+        let errorMessages = "";
         for (let recipient of recipientList) {
           try {
             const response = await axiosPublic.post("/send-sms", {
@@ -105,9 +148,9 @@ const SmsForm = () => {
               type: "plain",
               message,
             });
-  
-            console.log("SMS sending response:", response.data); 
-  
+
+            console.log("SMS sending response:", response.data);
+
             if (response.data.success) {
               toast.success(`SMS sent successfully to ${recipient}!`);
               console.log(user.email);
@@ -126,16 +169,16 @@ const SmsForm = () => {
             errorMessages += `Error sending SMS to ${recipient}. Please try again.\n`;
           }
         }
-        
-        if (errorMessages !== '') {
-          toast.error(errorMessages); 
+
+        if (errorMessages !== "") {
+          toast.error(errorMessages);
         }
-        
+
         const newCount = count - rate * recipientList.length;
         updateCount(newCount, foundEmail);
-  
+
         setTimeout(() => {
-        //   window.location.reload();
+          //   window.location.reload();
         }, 2000);
       } else {
         toast.error("You do not have enough balance to send SMS.");
@@ -145,9 +188,6 @@ const SmsForm = () => {
       toast.error("Error sending SMS. Please try again.");
     }
   };
-  
-  
-  
 
   const handleInputChange = (e) => {
     const inputText = e.target.value;
@@ -170,15 +210,33 @@ const SmsForm = () => {
       setRecipient(`88${inputText}`);
     }
   };
-const handleTemplateChange = (e) => {
-  const templateId = e.target.value;
-  const selectedTemplate = templates.find((template) => template._id === templateId);
-  if (selectedTemplate) {
-    setSelectedTemplate(selectedTemplate.message);
-    setMessage(selectedTemplate.text);
-  }
-};
+  const handleTemplateChange = (e) => {
+    const templateId = e.target.value;
+    const selectedTemplate = templates.find(
+      (template) => template._id === templateId
+    );
+    if (selectedTemplate) {
+      setSelectedTemplate(selectedTemplate.message);
+      setMessage(selectedTemplate.text);
+    }
+  };
 
+  const renderContactDropdown = () => (
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-white">Contacts:</label>
+      <select
+        onChange={handleContactChange} // Add onChange event handler
+        className="mt-1 p-2 border rounded w-full bg-slate-300"
+      >
+        <option value="">Select a Contact</option>
+        {contacts.map((contact) => (
+          <option key={contact._id} value={contact._id}>
+            {contact.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
   const renderTemplateDropdown = () => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-white">Template:</label>
@@ -203,20 +261,7 @@ const handleTemplateChange = (e) => {
         <h2 className="text-2xl font-bold mb-4 text-white">SMS Form</h2>
         {/* <a href="/smsHistory" className="text-lg px-2 rounded-md bg-slate-300 font-bold mb-2 hover:bg-slate-400">SMS History</a> */}
       </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-white">
-          Recipient:
-        </label>
-        <div className="relative justify-center">
-          <span className="absolute left-2 top-1/4 text-lg text-black">88</span>
-          <input
-            type="text"
-            value={recipient.replace(/^88/, "")}
-            onChange={handleChange}
-            className="pl-8 mt-1 p-2 border rounded w-full bg-slate-300 text-lg"
-          />
-        </div>
-      </div>
+      {renderContactDropdown()}
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-white">
@@ -229,13 +274,9 @@ const handleTemplateChange = (e) => {
           className="mt-1 p-2 border rounded w-full bg-slate-300"
         />
       </div>
-      <div>
-      {renderTemplateDropdown()}
-      </div>
+      <div>{renderTemplateDropdown()}</div>
       <div className="mb-4">
-        <label className="block text-sm font-medium text-white">
-          Message:
-        </label>
+        <label className="block text-sm font-medium text-white">Message:</label>
         <textarea
           value={message}
           placeholder="Type here first..."
@@ -262,4 +303,4 @@ const handleTemplateChange = (e) => {
   );
 };
 
-export default SmsForm;
+export default SmsContactForm;

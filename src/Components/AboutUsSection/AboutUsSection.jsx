@@ -26,8 +26,6 @@ const AboutUsSection = () => {
       </p>
     ));
   };
-  
-
   return (
     <div className="px-4 pb-10 bg-gray-200 pt-10">
       <div className="w-full md:w-8/12 mx-auto flex flex-col md:flex-row ">
