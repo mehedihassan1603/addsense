@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import useAdmin from "../Authentication/Hook/useAdmin";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [isAdmin, isAdminLoading] = useAdmin();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const [clickCount, setClickCount] = useState(0);
@@ -106,8 +108,13 @@ const Navbar = () => {
               <NavLink to="/package">Payment</NavLink>
             </li>
             <li>
-              <NavLink to="/sms">SMS</NavLink>
+              <NavLink to="/sms">Quick SMS</NavLink>
             </li>
+            {user && isAdmin && (
+              <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
+            )}
           </ul>
         </div>
         <div className="navbar-end flex gap-6 md:gap-10">

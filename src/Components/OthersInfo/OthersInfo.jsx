@@ -126,7 +126,7 @@ const OthersInfo = () => {
             required
             value={product.aboutus}
             onChange={handleChange}
-            className="w-full border p-2 rounded-md"
+            className="w-full h-40 border p-2 rounded-md"
           />
         </div>
 

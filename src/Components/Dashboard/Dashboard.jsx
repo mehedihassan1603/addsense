@@ -15,7 +15,7 @@ const Dashboard = () => {
           isMenuOpen ? "hidden" : ""
         }`}
       >
-        <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+        <Link to="/dashboard"><h2 className="text-2xl font-bold mb-6">Dashboard</h2></Link>
         <div className="dropdown dropdown-hover">
           <div
             tabIndex={0}
@@ -43,6 +43,12 @@ const Dashboard = () => {
           </ul>
         </div>
         <br />
+        <Link
+          to="/dashboard/addpackage"
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Package
+        </Link>
         <div className="dropdown dropdown-hover">
           <div
             tabIndex={0}
@@ -55,12 +61,6 @@ const Dashboard = () => {
             tabIndex={0}
             className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
           >
-            <Link
-              to="/dashboard/addpackage"
-              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-            >
-              Create Payment
-            </Link>
             <Link
               to="/dashboard/appinfo"
               className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
@@ -113,23 +113,20 @@ const Dashboard = () => {
             className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
           >
             <Link
-          to="/dashboard/smsinfo"
-          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-        >
-          SMS Information
-        </Link>
-        <Link
-          to="/dashboard/smsAllHistory"
-          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-        >
-          SMS History
-        </Link>
+              to="/dashboard/smsinfo"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              SMS Information
+            </Link>
+            <Link
+              to="/dashboard/smsAllHistory"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              SMS History
+            </Link>
           </ul>
         </div>
-        <Link
-          to="/"
-          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
-        >
+        <Link to="/" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
           Front Home
         </Link>
       </div>
@@ -170,9 +167,9 @@ const Dashboard = () => {
             </svg>
           )}
         </button>
-       <div className="min-h-screen">
-       <Outlet></Outlet>
-       </div>
+        <div className="min-h-screen">
+          <Outlet></Outlet>
+        </div>
       </div>
     </div>
   );

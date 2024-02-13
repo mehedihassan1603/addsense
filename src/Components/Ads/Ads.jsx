@@ -16,7 +16,6 @@ const Ads = () => {
         const sortedUsers = response.data.sort((a, b) => {
           return b._id.localeCompare(a._id);
         });
-        console.log(sortedUsers)
         setAdsData(sortedUsers);
       } catch (error) {
         console.error("Error fetching ads data:", error);
@@ -24,6 +23,7 @@ const Ads = () => {
     };
     fetchData();
   }, [axiosPublic]);
+
   const handleButtonClick = async () => {
     setClickCount(clickCount + 1);
 
@@ -49,7 +49,7 @@ const Ads = () => {
           Here are the Products for you:
         </h1>
       </div>
-      <div className="flex flex-col  justify-center gap-10">
+      <div className="flex flex-col justify-center gap-10">
         {adsData.length === 0 ? (
           <div className="col-span-3 mt-20 pb-20">
             <h1 className="text-center text-3xl text-red-500">
@@ -63,7 +63,7 @@ const Ads = () => {
               className="flex px-10 items-center justify-between w-full md:w-8/12 mx-auto bg-slate-200 rounded-lg shadow-xl"
             >
               <h1>Name: {product.name}</h1>
-              <div className="flex justify-between  items-center gap-10">
+              <div className="flex justify-between items-center gap-10">
                 <Link to={`/details/${product._id}`}>
                   <button className="px-5 py-2 rounded-3xl text-lg card-hover bg-rose-500 hover:bg-rose-700 text-white">
                     Play Ads

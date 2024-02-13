@@ -9,6 +9,7 @@ const Users = () => {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedUserCount, setEditedUserCount] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -19,7 +20,6 @@ const Users = () => {
           // Assuming the default MongoDB _id field
           return b._id.localeCompare(a._id);
         });
-        console.log(sortedUsers)
         setUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching user information:", error);
@@ -29,8 +29,8 @@ const Users = () => {
   
     fetchUsers();
   }, [axiosPublic]);
-  
-  
+
+  const filteredUsers = users.filter(user => user.userEmail.toLowerCase().startsWith(searchQuery.toLowerCase()));
 
   const handleEditClick = (_id, rate) => {
     setEditingUserId(_id);
@@ -58,18 +58,33 @@ const Users = () => {
     }
   };
 
-  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentUsers = users.slice(startIndex, endIndex);
+  const currentUsers = filteredUsers.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to the first page when search query changes
+  };
+
   return (
     <div className="w-full mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">User Information</h2>
+      <h2 className="text-3xl font-bold mb-4 text-center">User Information</h2>
+      <div className="flex justify-center mb-4 gap-4">
+      <h1 className="px-3 py-2 rounded bg-slate-700 text-white">Find User:</h1>
+        <input
+          type="text"
+          placeholder="Search by username..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="border rounded px-4 py-2"
+        />
+      </div>
       <div className="w-full overflow-scroll">
       <table className="min-w-full bg-white border rounded overflow-hidden">
         <thead className="bg-gray-800 text-white">

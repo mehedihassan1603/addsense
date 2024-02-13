@@ -16,6 +16,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchSmsHistory = async () => {
       try {
+        if (!user) return;
         const response = await axiosPublic.get("/smsHistory");
         const getUser = await axiosPublic.get("/userinfo");
         const filteredSmsHistory = response.data.filter(

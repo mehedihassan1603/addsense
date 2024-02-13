@@ -6,6 +6,7 @@ const SmsAllHistory = () => {
   const [smsHistory, setSmsHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedMessages, setExpandedMessages] = useState([]);
+  const [filter, setFilter] = useState("all");
   const itemsPerPage = 10;
   const axiosPublic = useAxiosPublic();
 
@@ -16,7 +17,7 @@ const SmsAllHistory = () => {
         const sortedUsers = response.data.sort((a, b) => {
           return b._id.localeCompare(a._id);
         });
-        console.log(sortedUsers)
+        console.log(sortedUsers);
         setSmsHistory(sortedUsers);
         setExpandedMessages(sortedUsers.map(() => false));
       } catch (error) {
@@ -27,12 +28,32 @@ const SmsAllHistory = () => {
     fetchSmsHistory();
   }, [axiosPublic]);
 
-  const totalPages = Math.ceil(smsHistory.length / itemsPerPage);
+  const filterSmsHistory = () => {
+    const today = moment().startOf('day');
+    const yesterday = moment().subtract(1, 'day').startOf('day');
+    const last7days = moment().subtract(7, 'days').startOf('day');
+    const last30days = moment().subtract(30, 'days').startOf('day');
+
+    switch (filter) {
+      case "today":
+        return smsHistory.filter(sms => moment(sms.timestamp).isSame(today, 'day'));
+      case "yesterday":
+        return smsHistory.filter(sms => moment(sms.timestamp).isSame(yesterday, 'day'));
+      case "last7days":
+        return smsHistory.filter(sms => moment(sms.timestamp).isAfter(last7days));
+      case "last30days":
+        return smsHistory.filter(sms => moment(sms.timestamp).isAfter(last30days));
+      default:
+        return smsHistory;
+    }
+  };
+
+  const totalPages = Math.ceil(filterSmsHistory().length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentSmsHistory = smsHistory.slice(startIndex, endIndex);
+  const currentSmsHistory = filterSmsHistory().slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -46,9 +67,24 @@ const SmsAllHistory = () => {
     });
   };
 
+  const handleFilterChange = (selectedFilter) => {
+    setFilter(selectedFilter);
+    setCurrentPage(1); // Reset to the first page when filter changes
+  };
+
   return (
     <div className="w-full mx-auto mt-8 p-4 border rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4">SMS History</h2>
+
+      <div className="flex justify-end mb-4">
+        <select value={filter} onChange={(e) => handleFilterChange(e.target.value)} className="border rounded px-4 py-2">
+          <option value="all">All</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="last7days">Last 7 Days</option>
+          <option value="last30days">Last 30 Days</option>
+        </select>
+      </div>
 
       {currentSmsHistory.length === 0 ? (
         <p className="text-gray-500">No SMS history available.</p>

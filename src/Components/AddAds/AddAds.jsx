@@ -51,13 +51,12 @@ const AddAds = () => {
           <label htmlFor="frame" className="block text-gray-600">
             URL:
           </label>
-          <input
-            type="url"
+          <textarea
             id="frame"
             name="frame"
             required
             onChange={handleChange}
-            className="w-full border p-2 rounded-md"
+            className="w-full h-40 border p-2 rounded-md"
           />
         </div>
         <div className="mb-4">

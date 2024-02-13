@@ -139,8 +139,9 @@ const Details = () => {
         </div>
       </div>
       <div className="bg-slate-200 flex justify-center w-full h-auto py-10 rounded-lg shadow-xl">
-        <img src={product.frame} alt={product.name} />
+        <div dangerouslySetInnerHTML={{ __html: product.frame }}></div>
       </div>
+      
       <ToastContainer />
     </div>
   );

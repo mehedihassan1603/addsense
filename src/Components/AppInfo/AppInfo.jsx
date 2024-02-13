@@ -48,7 +48,7 @@ const AppInfo = () => {
           });
 
           setTimeout(() => {
-            navigate("/");
+            navigate("/dashboard");
           }, 2000);
         }
       })
@@ -228,7 +228,7 @@ const AppInfo = () => {
             type="submit"
             className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
           >
-            ADD
+            Update
           </button>
         </div>
       </form>

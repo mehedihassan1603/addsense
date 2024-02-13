@@ -15,6 +15,11 @@ const SmsContact = () => {
   const [expandedMessages, setExpandedMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editedItem, setEditedItem] = useState({
+    name: "",
+    number: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,11 +101,51 @@ const SmsContact = () => {
       return newExpanded;
     });
   };
+ 
+
+const handleEdit = (item) => {
+  setEditingItemId(item._id);
+  setEditedItem({
+    name: item.name,
+    number: item.number,
+  });
+};
+
+const handleCancelEdit = () => {
+  setEditingItemId(null);
+  setEditedItem({
+    name: "",
+    number: "",
+  });
+};
+
+const handleSaveEdit = async (itemId) => {
+  try {
+    await axiosPublic.put(`/smscontact/${itemId}`, editedItem);
+    toast.success("Item updated successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 2000,
+    });
+    handleCancelEdit();
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  } catch (error) {
+    console.error("Error updating item:", error);
+    toast.error("Error updating item. Please try again.");
+  }
+};
+
+const handleChangeEditedItem = (e) => {
+  const { name, value } = e.target;
+  setEditedItem((prevItem) => ({
+    ...prevItem,
+    [name]: value,
+  }));
+};
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -158,36 +203,73 @@ const SmsContact = () => {
               </tr>
             </thead>
             <tbody>
-            {currentItems.map((item, index) => (
-                <tr key={item._id}>
-                  <td className="border border-gray-300 p-2">{index + 1}</td>
-                  <td className="border border-gray-300 p-2">{item.name}</td>
-                  <td className="border border-gray-300 p-2">
-                    {expandedMessages[index]
-                      ? item.number
-                      : `${item.number.slice(0, 50)}${
-                          item.number.length > 50 ? "..." : ""
-                        }`}
-                    {item.number.length > 50 && (
-                      <button
-                        className="text-blue-500 hover:underline focus:outline-none"
-                        onClick={() => toggleMessageExpansion(index)}
-                      >
-                        {expandedMessages[index] ? "See Less" : "See More"}
-                      </button>
-                    )}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    <button
-                      onClick={() => handleDelete(item._id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+    {currentItems.map((item, index) => (
+      <tr key={item._id}>
+        <td className="border border-gray-300 p-2">{index + 1}</td>
+        <td className="border border-gray-300 p-2">{item.name}</td>
+        <td className="border border-gray-300 p-2">
+          {editingItemId === item._id ? (
+            <input
+              type="text"
+              name="number"
+              value={editedItem.number}
+              onChange={handleChangeEditedItem}
+              className="w-full border p-2 rounded-md"
+            />
+          ) : (
+            <>
+              {expandedMessages[index]
+                ? item.number
+                : `${item.number.slice(0, 50)}${
+                    item.number.length > 50 ? "..." : ""
+                  }`}
+              {item.number.length > 50 && (
+                <button
+                  className="text-blue-500 hover:underline focus:outline-none"
+                  onClick={() => toggleMessageExpansion(index)}
+                >
+                  {expandedMessages[index] ? "See Less" : "See More"}
+                </button>
+              )}
+            </>
+          )}
+        </td>
+        <td className="border border-gray-300 p-2">
+          {editingItemId === item._id ? (
+            <div className="flex">
+              <button
+                className="px-3 py-1 mx-1 bg-green-500 text-white rounded"
+                onClick={() => handleSaveEdit(item._id)}
+              >
+                Save
+              </button>
+              <button
+                className="px-3 py-1 mx-1 bg-gray-500 text-white rounded"
+                onClick={handleCancelEdit}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <div className="flex">
+              <button
+                className="text-red-500 hover:text-red-700"
+                onClick={() => handleDelete(item._id)}
+              >
+                Delete
+              </button>
+              <button
+                className="text-blue-500 hover:text-blue-700 ml-2"
+                onClick={() => handleEdit(item)}
+              >
+                Edit
+              </button>
+            </div>
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
           </table>
         </div>
         {/* Pagination */}

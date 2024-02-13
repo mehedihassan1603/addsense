@@ -10,6 +10,7 @@ const ManualHistory = () => {
   const { user } = useAuth();
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState("All"); // State to store the selected filter
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -127,16 +128,32 @@ const ManualHistory = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  const currentPayments = paymentHistory.slice(startIndex, endIndex);
+  // Filter currentPayments based on the selected filter
+  let filteredPayments = paymentHistory.filter(payment => {
+    if (filter === "All") return true;
+    return payment.status === filter.toLowerCase();
+  });
+
+  const currentPayments = filteredPayments.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const handleFilterChange = (selectedFilter) => {
+    setFilter(selectedFilter);
+    setCurrentPage(1); // Reset current page when filter changes
+  };
   return (
     <div className="container mx-auto p-4 overflow-x-auto">
-      <h1 className="text-2xl font-bold mb-4">Manual Payment History</h1>
+      <h1 className="text-2xl text-center font-bold mb-4">Manual Payment History</h1>
       <div className="w-full overflow-scroll">
+      <div className="my-4 flex justify-center bg-white w-full md:w-8/12 mx-auto p-2">
+          <button className={`px-3 py-1 mr-2 ${filter === "All" && 'bg-gray-600 rounded-md text-white'}`} onClick={() => handleFilterChange("All")}>All</button>
+          <button className={`px-3 py-1 mr-2 ${filter === "Accepted" && 'bg-gray-600 rounded-md text-white'}`} onClick={() => handleFilterChange("Accepted")}>Accepted</button>
+          <button className={`px-3 py-1 mr-2 ${filter === "Rejected" && 'bg-gray-600 rounded-md text-white'}`} onClick={() => handleFilterChange("Rejected")}>Rejected</button>
+          <button className={`px-3 py-1 ${filter === "Pending" && 'bg-gray-600 rounded-md text-white'}`} onClick={() => handleFilterChange("Pending")}>Pending</button>
+        </div>
         <table className="w-full bg-white border border-gray-700">
           <thead>
             <tr>
