@@ -49,7 +49,7 @@ const AddAds = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="frame" className="block text-gray-600">
-            URL:
+            Script:
           </label>
           <textarea
             id="frame"

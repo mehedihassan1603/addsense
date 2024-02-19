@@ -45,16 +45,15 @@ const EditForm = ({ ad, onSave, onCancel }) => {
       <form onSubmit={handleSave}>
         <div className="mb-4">
           <label htmlFor="frame" className="block text-gray-600">
-            URL:
+            Script:
           </label>
-          <input
-            type="url"
+          <textarea
             id="frame"
             name="frame"
             required
             value={editedProduct.frame}
             onChange={handleChange}
-            className="w-full border p-2 rounded-md"
+            className="w-full h-40 border p-2 rounded-md"
           />
         </div>
         <div className="mb-4">

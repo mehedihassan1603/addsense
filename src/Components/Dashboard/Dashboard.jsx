@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import BottomNavbar from "../Homepage/BottomNavbar";
+import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
 
 const Dashboard = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        console.log("Successfully logged out");
+        navigate("/adminlogin");
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -15,7 +27,36 @@ const Dashboard = () => {
           isMenuOpen ? "hidden" : ""
         }`}
       >
-        <Link to="/dashboard"><h2 className="text-2xl font-bold mb-6">Dashboard</h2></Link>
+        <Link to="/dashboard">
+          <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+        </Link>
+        <div className="dropdown dropdown-hover">
+          <div
+            tabIndex={0}
+            role="button"
+            className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+          >
+            Blog
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-gray-500 rounded-box w-52"
+          >
+            <Link
+              to="/dashboard/createBlog"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              Create Blog
+            </Link>
+            <Link
+              to="/dashboard/blogList"
+              className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+            >
+              Blog List
+            </Link>
+          </ul>
+        </div>
+        <br />
         <div className="dropdown dropdown-hover">
           <div
             tabIndex={0}
@@ -129,6 +170,14 @@ const Dashboard = () => {
         <Link to="/" className="block py-2 px-4 mb-2 rounded hover:bg-gray-700">
           Front Home
         </Link>
+        <Link
+          onClick={() => {
+            handleLogout();
+          }}
+          className="block py-2 px-4 mb-2 rounded hover:bg-gray-700"
+        >
+          Logout
+        </Link>
       </div>
       <div className="flex-1 p-6">
         <button
@@ -171,6 +220,7 @@ const Dashboard = () => {
           <Outlet></Outlet>
         </div>
       </div>
+          <BottomNavbar></BottomNavbar>
     </div>
   );
 };

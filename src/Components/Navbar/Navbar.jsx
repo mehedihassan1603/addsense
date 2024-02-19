@@ -20,9 +20,9 @@ const Navbar = () => {
             (item) => item.userEmail === user.email
           );
           const title = await axiosPublic.get("/othersinfo");
-          const take = title.data.find(item => item.title);
-          console.log(take.title)
-          setTitle(take.title)
+          const take = title.data.find((item) => item.title);
+          console.log(take.title);
+          setTitle(take.title);
           setClickCount(foundEmail?.count || 0);
         } else {
           setClickCount(0);
@@ -33,14 +33,13 @@ const Navbar = () => {
     };
     fetchData();
   }, [axiosPublic, user?.email]);
-  
-  
+
   const handleLogout = () => {
     setClickCount(0);
     logOut()
       .then(() => {
-        console.log("Successfull")
-        navigate('/');
+        console.log("Successfull");
+        navigate("/");
       })
       .catch((error) => console.log(error));
   };
@@ -80,21 +79,32 @@ const Navbar = () => {
                 <NavLink to="/package">Payment</NavLink>
               </li>
               <li>
-              <NavLink to="/sms">SMS</NavLink>
-            </li>
+                <NavLink to="/blog">Blog</NavLink>
+              </li>
+              <li>
+                <NavLink to="/sms">Quick SMS</NavLink>
+              </li>
+              {user && !isAdmin && (
+              <li>
+                <NavLink to="/profile/profile">Dashboard</NavLink>
+              </li>
+            )}
+              {user && isAdmin && (
+                <li>
+                  <NavLink to="/dashboard">Dashboard</NavLink>
+                </li>
+              )}
             </ul>
           </div>
 
-          <a href="/">
+          <a className="pl-4" href="/">
             <img
-              src="https://i.ibb.co/XS0stSd/logo-removebg-preview.png"
-              width={"40px"}
+              src="/images/free sms apps.png"
+              width={"170px"}
               alt=""
+              className="rounded-lg"
             />
           </a>
-          <NavLink to="/" className="normal-case text-xl font-semibold">
-            {title}
-          </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-title text-white text-lg menu-horizontal px-1 ">
@@ -108,8 +118,16 @@ const Navbar = () => {
               <NavLink to="/package">Payment</NavLink>
             </li>
             <li>
+              <NavLink to="/blog">Blog</NavLink>
+            </li>
+            <li>
               <NavLink to="/sms">Quick SMS</NavLink>
             </li>
+            {user && !isAdmin && (
+              <li>
+                <NavLink to="/profile/profile">Dashboard</NavLink>
+              </li>
+            )}
             {user && isAdmin && (
               <li>
                 <NavLink to="/dashboard">Dashboard</NavLink>
@@ -124,7 +142,10 @@ const Navbar = () => {
           <div className="text-white flex flex-col lg:flex-row items-center">
             {user ? (
               <>
-                <Link to="/profile/profile" className="flex flex-col justify-center items-center">
+                <Link
+                  to="/profile/profile"
+                  className="flex flex-col justify-center items-center"
+                >
                   <span>
                     <img
                       className="w-8 rounded-full"
@@ -132,7 +153,9 @@ const Navbar = () => {
                       alt=""
                     />
                   </span>
-                  <span className="text-xs bg-green-600 p-2 rounded-md">{user.displayName}</span>
+                  <span className="text-xs bg-green-600 p-2 rounded-md">
+                    {user.displayName}
+                  </span>
                 </Link>
                 <button className="text-sm bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-0 md:py-2 px-1 md:px-4 rounded-full shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
                   <a onClick={handleLogout}>Logout</a>

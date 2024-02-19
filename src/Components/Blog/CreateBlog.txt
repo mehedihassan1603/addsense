@@ -1,0 +1,139 @@
+import { useNavigate } from "react-router-dom";
+import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const CreateBlogAds = () => {
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+  const [packagee, setPackagee] = useState({});
+  const [product, setProduct] = useState({
+    frame1: "",
+    text: "",
+    frame2: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axiosPublic.get("/blog");
+            const responsePackage = response.data.find(item => item.frame1);
+            setPackagee(responsePackage);
+        } catch (error) {
+            console.error("Error fetching package:", error);
+        }
+    };
+
+    fetchData();
+  }, [axiosPublic]);
+
+  useEffect(() => {
+    setProduct({
+      ...product,
+      frame1: packagee?.frame1 || "",
+      text: packagee?.text || "",
+      frame2: packagee?.frame2 || "",
+    });
+  }, [packagee]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!packagee) {
+      axiosPublic.post("/blog", product).then((res) => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          toast.success("Blog page successfully created!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+          });
+  
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
+        }
+      });
+    } else {
+      axiosPublic.put(`/blog/${packagee._id}`, product).then((res) => {
+        console.log(res.data);
+        if (res.data.modifiedCount > 0) {
+          toast.success("Blog Page successfully updated!", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+          });
+  
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 2000);
+        }
+      });
+    }
+  };
+  
+  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct({ ...product, [name]: value });
+  };
+  
+
+
+  return (
+    <div className="bg-gray-200 w-9/12 mt-10 mx-auto p-6 rounded-lg">
+      <h1 className="text-2xl font-bold bg-slate-800 py-2 rounded-lg text-center text-white mb-4">
+        Update Blog Page
+      </h1>
+      <form onSubmit={handleSubmit}>
+      <div className="mb-4">
+          <label htmlFor="frame1" className="block text-gray-600">
+            URL1:
+          </label>
+          <textarea
+            id="frame1"
+            name="frame1"
+            onChange={handleChange}
+            value={product.frame1}
+            className="w-full h-40 border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="text" className="block text-gray-600">
+            Content:
+          </label>
+          <textarea
+            id="text"
+            name="text"
+            onChange={handleChange}
+            value={product.text}
+            className="w-full border h-40 p-2 rounded-md"
+          />
+        </div>
+        
+        <div className="mb-4">
+          <label htmlFor="frame2" className="block text-gray-600">
+            URL2:
+          </label>
+          <textarea
+            id="frame2"
+            name="frame2"
+            onChange={handleChange}
+            value={product.frame2}
+            className="w-full h-40 border p-2 rounded-md"
+          />
+        </div>
+        <div className="flex justify-center items-center">
+          <button
+            type="submit"
+            className="px-5 text-white py-2 rounded-3xl text-lg card-hover mt-4 bg-gradient-to-r from-rose-700 via-rose-800 to-rose-700"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+      <ToastContainer />
+    </div>
+  );
+};
+
+export default CreateBlogAds;

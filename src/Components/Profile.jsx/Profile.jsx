@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Authentication/AuthProvider/AuthProvider";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../Authentication/Hook/useAxiosPublic";
+import BottomNavbar from "../Homepage/BottomNavbar";
 
 const Profile = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -59,7 +60,8 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-slate-400">
+    <div>
+      <div className="flex flex-col md:flex-row bg-slate-400 h-screen">
       <div
         className={`w-full md:w-1/4 p-6 bg-gray-800 text-white ${
           isMenuOpen ? "hidden" : ""
@@ -215,6 +217,8 @@ const Profile = () => {
         </button>
         <Outlet></Outlet>
       </div>
+    <BottomNavbar></BottomNavbar>
+    </div>
     </div>
   );
 };

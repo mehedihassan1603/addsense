@@ -24,7 +24,6 @@ const useAdmin = () => {
     if (user) {
       fetchAdminStatus();
     } else {
-      // If user is not authenticated, set isAdmin to false
       setIsAdmin(false);
       setIsAdminLoading(false);
     }

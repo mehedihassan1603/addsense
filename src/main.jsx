@@ -47,6 +47,15 @@ import SmsTemplate from "./Components/SMS/SmsTemplate.jsx";
 import AboutUsSection from "./Components/AboutUsSection/AboutUsSection.jsx";
 import SmsContactForm from "./Components/SMS/SmsContactForm.jsx";
 import SmsContact from "./Components/SMS/SmsContact.jsx";
+import CreateBlogAds from "./Components/Blog/CreateBlogAds.jsx";
+import BlogList from "./Components/Blog/BlogList.jsx";
+import Blog from "./Components/Blog/Blog.jsx";
+import ViewBlog from "./Components/Blog/ViewBlog.jsx";
+import AdminLogin from "./Components/Authentication/Login/AdminLogin.jsx";
+import Privacy from "./Components/Privacy/Privacy.jsx";
+import Terms from "./Components/Privacy/Terms.jsx";
+import Disclaimer from "./Components/Privacy/disclaimer.jsx";
+import ContactUs from "./Components/Contact/ContactUs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +71,10 @@ const router = createBrowserRouter([
         element: <Login></Login>,
       },
       {
+        path: "/adminlogin",
+        element: <AdminLogin></AdminLogin>,
+      },
+      {
         path: "/register",
         element: <Register></Register>,
       },
@@ -70,12 +83,36 @@ const router = createBrowserRouter([
         element: <PrivateRoute><Ads></Ads></PrivateRoute>,
       },
       {
+        path: "/blog",
+        element: <PrivateRoute><Blog></Blog></PrivateRoute>,
+      },
+      {
         path: "/about",
         element: <AboutUsSection></AboutUsSection>
       },
       {
+        path: "/privacy",
+        element: <Privacy></Privacy>
+      },
+      {
+        path: "/terms",
+        element: <Terms></Terms>
+      },
+      {
+        path: "/disclaimer",
+        element: <Disclaimer></Disclaimer>
+      },
+      {
+        path: "/contact-us",
+        element: <ContactUs></ContactUs>
+      },
+      {
         path: "/details/:_id",
         element: <PrivateRoute><Details></Details></PrivateRoute>,
+      },
+      {
+        path: "/seemore/:_id",
+        element: <PrivateRoute><ViewBlog></ViewBlog></PrivateRoute>,
       },
       {
         path: "/package",
@@ -222,6 +259,14 @@ const router = createBrowserRouter([
       {
         path: "userinfo",
         element: <Users></Users>,
+      },
+      {
+        path: "createBlog",
+        element: <CreateBlogAds></CreateBlogAds>,
+      },
+      {
+        path: "blogList",
+        element: <BlogList></BlogList>,
       },
     ]
   },

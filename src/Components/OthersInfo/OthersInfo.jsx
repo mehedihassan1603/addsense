@@ -13,6 +13,9 @@ const OthersInfo = () => {
     facebook: "",
     linkdin: "",
     aboutus: "",
+    contact: "",
+    terms: "",
+    disclaimer: "",
     phone: "",
     email: "",
     whatsapp: "",
@@ -40,6 +43,9 @@ const OthersInfo = () => {
         facebook: product.facebook,
         linkdin: product.linkdin,
         aboutus: product.aboutus,
+        contact: product.contact,
+        terms: product.terms,
+        disclaimer: product.disclaimer,
         phone: product.phone,
         email: product.email,
         whatsapp: product.whatsapp,
@@ -125,6 +131,45 @@ const OthersInfo = () => {
             name="aboutus"
             required
             value={product.aboutus}
+            onChange={handleChange}
+            className="w-full h-40 border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="contact" className="block text-gray-600">
+            Privacy & Policy:
+          </label>
+          <textarea
+            id="contact"
+            name="contact"
+            required
+            value={product.contact}
+            onChange={handleChange}
+            className="w-full h-40 border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="terms" className="block text-gray-600">
+            Terms & Conditions
+          </label>
+          <textarea
+            id="terms"
+            name="terms"
+            required
+            value={product.terms}
+            onChange={handleChange}
+            className="w-full h-40 border p-2 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="disclaimer" className="block text-gray-600">
+            Disclaimer
+          </label>
+          <textarea
+            id="disclaimer"
+            name="disclaimer"
+            required
+            value={product.disclaimer}
             onChange={handleChange}
             className="w-full h-40 border p-2 rounded-md"
           />
